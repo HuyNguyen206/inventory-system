@@ -12,21 +12,24 @@
                                     </div>
                                     <form>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" id="exampleInputFirstName" placeholder="Enter Name">
+                                            <input v-model='user.name' type="text" class="form-control" id="exampleInputFirstName"
+                                                   placeholder="Enter Name">
                                         </div>
                                         <div class="form-group">
-                                            <input type="email" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp"
+                                            <input v-model='user.email'  type="email" class="form-control" id="exampleInputEmail"
+                                                   aria-describedby="emailHelp"
                                                    placeholder="Enter Email Address">
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control" id="exampleInputPassword" placeholder="Password">
+                                            <input v-model='user.password'  type="password" class="form-control" id="exampleInputPassword"
+                                                   placeholder="Password">
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control" id="exampleInputPasswordRepeat"
+                                            <input v-model='user.password_confirmation'  type="password" class="form-control" id="exampleInputPasswordRepeat"
                                                    placeholder="Repeat Password">
                                         </div>
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-block">Register</button>
+                                            <button type="submit" class="btn btn-primary btn-block" @click.prevent="register">Register</button>
                                         </div>
                                         <hr>
                                         <a href="index.html" class="btn btn-google btn-block">
@@ -38,7 +41,9 @@
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <router-link class="font-weight-bold small" :to="{ path: '/'}">Already have an account?</router-link>
+                                        <router-link class="font-weight-bold small" :to="{ path: '/'}">Already have an
+                                            account?
+                                        </router-link>
                                     </div>
                                     <div class="text-center">
                                     </div>
@@ -54,7 +59,28 @@
 
 <script>
 export default {
-name: "Register"
+    name: "Register",
+    data(){
+        return {
+            user:{
+                name:'',
+                email:'',
+                password:'',
+                password_confirmation:''
+            }
+        }
+    },
+    methods:{
+        register(){
+            axios.post(`/auth/register`, this.user)
+            .then(res => {
+
+            })
+            .catch(err => {
+
+            })
+        }
+    }
 }
 </script>
 

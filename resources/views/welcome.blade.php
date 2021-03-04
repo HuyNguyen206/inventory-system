@@ -306,17 +306,6 @@
 
                 <!---Container Fluid-->
             </div>
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-            <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - developed by
-              <b><a href="https://indrijunanda.gitlab.io/" target="_blank">indrijunanda</a></b>
-            </span>
-                    </div>
-                </div>
-            </footer>
-            <!-- Footer -->
         </div>
     </div>
 </div>
@@ -333,7 +322,13 @@
 <script src="{{asset('backend/js/ruang-admin.min.js')}}"></script>
 <script src="{{asset('backend/vendor/chart.js/Chart.min.js')}}"></script>
 <script src="{{asset('backend/js/demo/chart-area-demo.js')}}"></script>
+<script>
+    window.url = @json([
+    'url' => url('/api')
+])
+</script>
 <script src="{{asset('js/app.js')}}"></script>
+
 </body>
 
 </html>

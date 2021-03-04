@@ -1,6 +1,7 @@
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Forget from "./components/auth/Forget";
+import Home from "./components/Home";
 const routes = [
     {
         path: '/',
@@ -16,6 +17,11 @@ const routes = [
         path: '/forget',
         component: Forget,
         name: 'forget'
+    },
+    {
+        path: '/home',
+        component: Home,
+        name: 'home'
     },
     // {
     //     path: '/bar',
