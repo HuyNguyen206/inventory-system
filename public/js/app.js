@@ -2001,6 +2001,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "AddUser",
   data: function data() {
@@ -2011,7 +2022,7 @@ __webpack_require__.r(__webpack_exports__);
         email: '',
         address: '',
         salary: '',
-        birthday: '',
+        joining_date: '',
         nid: '',
         phone: '',
         image: ''
@@ -45210,289 +45221,320 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row justify-content-center" }, [
-    _c("div", { staticClass: "col-md-6 col-11" }, [
-      _c("div", { staticClass: "card shadow-sm my-5" }, [
-        _c("div", { staticClass: "card-body p-0" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-12" }, [
-              _c("div", { staticClass: "login-form" }, [
-                _vm._m(0),
-                _vm._v(" "),
-                _c("form", [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("div", { staticClass: "form-row" }, [
-                      _c("div", { staticClass: "col-md-6" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.name,
-                              expression: "form.name"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: { "is-invalid": _vm.errors.name },
-                          attrs: { type: "text", placeholder: "Enter Name" },
-                          domProps: { value: _vm.form.name },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
+  return _c("div", [
+    _c("div", { staticClass: "row" }, [
+      _c(
+        "div",
+        { staticClass: "col-12" },
+        [
+          _c(
+            "router-link",
+            {
+              staticClass: "btn btn-primary m-2",
+              attrs: { to: { name: "users.index" } }
+            },
+            [_vm._v("List employee")]
+          )
+        ],
+        1
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-6 col-11" }, [
+        _c("div", { staticClass: "card shadow-sm my-5" }, [
+          _c("div", { staticClass: "card-body p-0" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-lg-12" }, [
+                _c("div", { staticClass: "login-form" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c("form", [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("div", { staticClass: "form-row" }, [
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.name,
+                                expression: "form.name"
                               }
-                              _vm.$set(_vm.form, "name", $event.target.value)
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _vm.errors.name
-                          ? _c("div", { staticClass: "invalid-feedback" }, [
-                              _vm._v(" " + _vm._s(_vm.errors.name[0]))
-                            ])
-                          : _vm._e()
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-6" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.email,
-                              expression: "form.email"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: { "is-invalid": _vm.errors.email },
-                          attrs: {
-                            type: "email",
-                            "aria-describedby": "emailHelp",
-                            placeholder: "Enter Email Address"
-                          },
-                          domProps: { value: _vm.form.email },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
+                            ],
+                            staticClass: "form-control",
+                            class: { "is-invalid": _vm.errors.name },
+                            attrs: { type: "text", placeholder: "Enter Name" },
+                            domProps: { value: _vm.form.name },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(_vm.form, "name", $event.target.value)
                               }
-                              _vm.$set(_vm.form, "email", $event.target.value)
                             }
-                          }
-                        }),
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.name
+                            ? _c("div", { staticClass: "invalid-feedback" }, [
+                                _vm._v(" " + _vm._s(_vm.errors.name[0]))
+                              ])
+                            : _vm._e()
+                        ]),
                         _vm._v(" "),
-                        _vm.errors.email
-                          ? _c("div", { staticClass: "invalid-feedback" }, [
-                              _vm._v(" " + _vm._s(_vm.errors.email[0]))
-                            ])
-                          : _vm._e()
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.email,
+                                expression: "form.email"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            class: { "is-invalid": _vm.errors.email },
+                            attrs: {
+                              type: "email",
+                              "aria-describedby": "emailHelp",
+                              placeholder: "Enter Email Address"
+                            },
+                            domProps: { value: _vm.form.email },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(_vm.form, "email", $event.target.value)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.email
+                            ? _c("div", { staticClass: "invalid-feedback" }, [
+                                _vm._v(" " + _vm._s(_vm.errors.email[0]))
+                              ])
+                            : _vm._e()
+                        ])
                       ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("div", { staticClass: "form-row" }, [
-                      _c("div", { staticClass: "col-md-6" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.address,
-                              expression: "form.address"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: { "is-invalid": _vm.errors.address },
-                          attrs: { type: "text", placeholder: "Enter address" },
-                          domProps: { value: _vm.form.address },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("div", { staticClass: "form-row" }, [
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.address,
+                                expression: "form.address"
                               }
-                              _vm.$set(_vm.form, "address", $event.target.value)
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _vm.errors.address
-                          ? _c("div", { staticClass: "invalid-feedback" }, [
-                              _vm._v(" " + _vm._s(_vm.errors.address[0]))
-                            ])
-                          : _vm._e()
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-6" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.salary,
-                              expression: "form.salary"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: { "is-invalid": _vm.errors.salary },
-                          attrs: {
-                            type: "number",
-                            "aria-describedby": "emailHelp",
-                            placeholder: "Enter salary"
-                          },
-                          domProps: { value: _vm.form.salary },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
+                            ],
+                            staticClass: "form-control",
+                            class: { "is-invalid": _vm.errors.address },
+                            attrs: {
+                              type: "text",
+                              placeholder: "Enter address"
+                            },
+                            domProps: { value: _vm.form.address },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.form,
+                                  "address",
+                                  $event.target.value
+                                )
                               }
-                              _vm.$set(_vm.form, "salary", $event.target.value)
                             }
-                          }
-                        }),
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.address
+                            ? _c("div", { staticClass: "invalid-feedback" }, [
+                                _vm._v(" " + _vm._s(_vm.errors.address[0]))
+                              ])
+                            : _vm._e()
+                        ]),
                         _vm._v(" "),
-                        _vm.errors.salary
-                          ? _c("div", { staticClass: "invalid-feedback" }, [
-                              _vm._v(" " + _vm._s(_vm.errors.salary[0]))
-                            ])
-                          : _vm._e()
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.salary,
+                                expression: "form.salary"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            class: { "is-invalid": _vm.errors.salary },
+                            attrs: {
+                              type: "number",
+                              "aria-describedby": "emailHelp",
+                              placeholder: "Enter salary"
+                            },
+                            domProps: { value: _vm.form.salary },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.form,
+                                  "salary",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.salary
+                            ? _c("div", { staticClass: "invalid-feedback" }, [
+                                _vm._v(" " + _vm._s(_vm.errors.salary[0]))
+                              ])
+                            : _vm._e()
+                        ])
                       ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("div", { staticClass: "form-row" }, [
-                      _c("div", { staticClass: "col-md-6" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.birthday,
-                              expression: "form.birthday"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: { "is-invalid": _vm.errors.birthday },
-                          attrs: {
-                            type: "date",
-                            placeholder: "Enter birthday"
-                          },
-                          domProps: { value: _vm.form.birthday },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("div", { staticClass: "form-row" }, [
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.joining_date,
+                                expression: "form.joining_date"
                               }
-                              _vm.$set(
-                                _vm.form,
-                                "birthday",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _vm.errors.birthday
-                          ? _c("div", { staticClass: "invalid-feedback" }, [
-                              _vm._v(" " + _vm._s(_vm.errors.birthday[0]))
-                            ])
-                          : _vm._e()
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-6" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.nid,
-                              expression: "form.nid"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: { "is-invalid": _vm.errors.nid },
-                          attrs: {
-                            type: "text",
-                            "aria-describedby": "emailHelp",
-                            placeholder: "Enter NID"
-                          },
-                          domProps: { value: _vm.form.nid },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
+                            ],
+                            staticClass: "form-control",
+                            class: { "is-invalid": _vm.errors.joining_date },
+                            attrs: {
+                              type: "date",
+                              placeholder: "Enter joining_date"
+                            },
+                            domProps: { value: _vm.form.joining_date },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.form,
+                                  "joining_date",
+                                  $event.target.value
+                                )
                               }
-                              _vm.$set(_vm.form, "nid", $event.target.value)
                             }
-                          }
-                        }),
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.joining_date
+                            ? _c("div", { staticClass: "invalid-feedback" }, [
+                                _vm._v(" " + _vm._s(_vm.errors.joining_date[0]))
+                              ])
+                            : _vm._e()
+                        ]),
                         _vm._v(" "),
-                        _vm.errors.nid
-                          ? _c("div", { staticClass: "invalid-feedback" }, [
-                              _vm._v(" " + _vm._s(_vm.errors.nid[0]))
-                            ])
-                          : _vm._e()
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.nid,
+                                expression: "form.nid"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            class: { "is-invalid": _vm.errors.nid },
+                            attrs: {
+                              type: "text",
+                              "aria-describedby": "emailHelp",
+                              placeholder: "Enter NID"
+                            },
+                            domProps: { value: _vm.form.nid },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(_vm.form, "nid", $event.target.value)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.nid
+                            ? _c("div", { staticClass: "invalid-feedback" }, [
+                                _vm._v(" " + _vm._s(_vm.errors.nid[0]))
+                              ])
+                            : _vm._e()
+                        ])
                       ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("div", { staticClass: "form-row" }, [
-                      _c("div", { staticClass: "col-md-6" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.phone,
-                              expression: "form.phone"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: {
-                            clphoneass: { "is-invalid": _vm.errors.phone },
-                            type: "tel",
-                            id: "exampleInputFirstName",
-                            placeholder: "Enter phone"
-                          },
-                          domProps: { value: _vm.form.phone },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("div", { staticClass: "form-row" }, [
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.phone,
+                                expression: "form.phone"
                               }
-                              _vm.$set(_vm.form, "phone", $event.target.value)
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              clphoneass: { "is-invalid": _vm.errors.phone },
+                              type: "tel",
+                              id: "exampleInputFirstName",
+                              placeholder: "Enter phone"
+                            },
+                            domProps: { value: _vm.form.phone },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(_vm.form, "phone", $event.target.value)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.phone
+                            ? _c("div", { staticClass: "invalid-feedback" }, [
+                                _vm._v(" " + _vm._s(_vm.errors.phone[0]))
+                              ])
+                            : _vm._e()
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary btn-block",
+                          attrs: { type: "submit" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.create($event)
                             }
                           }
-                        }),
-                        _vm._v(" "),
-                        _vm.errors.phone
-                          ? _c("div", { staticClass: "invalid-feedback" }, [
-                              _vm._v(" " + _vm._s(_vm.errors.phone[0]))
-                            ])
-                          : _vm._e()
-                      ])
+                        },
+                        [_vm._v("Create")]
+                      )
                     ])
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(1),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary btn-block",
-                        attrs: { type: "submit" },
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.create($event)
-                          }
-                        }
-                      },
-                      [_vm._v("Create")]
-                    )
                   ])
                 ])
               ])
@@ -45536,6 +45578,10 @@ var staticRenderFns = [
               [_vm._v("Choose file")]
             )
           ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6" }, [
+          _c("img", { attrs: { src: "form.image", alt: "" } })
         ])
       ])
     ])
