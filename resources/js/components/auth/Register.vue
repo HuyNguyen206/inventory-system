@@ -1,7 +1,6 @@
 <template>
-    <div>
         <div class="row justify-content-center">
-            <div class="col-xl-10 col-lg-12 col-md-9">
+            <div class="col-md-6 col-11">
                 <div class="card shadow-sm my-5">
                     <div class="card-body p-0">
                         <div class="row">
@@ -12,20 +11,23 @@
                                     </div>
                                     <form>
                                         <div class="form-group">
-                                            <input v-model='user.name' type="text" class="form-control" id="exampleInputFirstName"
+                                            <input v-model='user.name' :class="{ 'is-invalid': errors.name}" type="text" class="form-control" id="exampleInputFirstName"
                                                    placeholder="Enter Name">
+                                            <div class="invalid-feedback" v-if="errors.name"> {{errors.name[0]}}</div>
                                         </div>
                                         <div class="form-group">
-                                            <input v-model='user.email'  type="email" class="form-control" id="exampleInputEmail"
+                                            <input v-model='user.email' :class="{ 'is-invalid': errors.email}"  type="email" class="form-control" id="exampleInputEmail"
                                                    aria-describedby="emailHelp"
                                                    placeholder="Enter Email Address">
+                                            <div class="invalid-feedback" v-if="errors.email"> {{errors.email[0]}}</div>
                                         </div>
                                         <div class="form-group">
-                                            <input v-model='user.password'  type="password" class="form-control" id="exampleInputPassword"
+                                            <input v-model='user.password' :class="{ 'is-invalid': errors.password}"   type="password" class="form-control" id="exampleInputPassword"
                                                    placeholder="Password">
+                                            <div class="invalid-feedback" v-if="errors.password"> {{errors.password[0]}}</div>
                                         </div>
                                         <div class="form-group">
-                                            <input v-model='user.password_confirmation'  type="password" class="form-control" id="exampleInputPasswordRepeat"
+                                            <input v-model='user.password_confirmation'   type="password" class="form-control" id="exampleInputPasswordRepeat"
                                                    placeholder="Repeat Password">
                                         </div>
                                         <div class="form-group">
@@ -54,7 +56,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </template>
 
 <script>
@@ -67,17 +68,26 @@ export default {
                 email:'',
                 password:'',
                 password_confirmation:''
-            }
+            },
+            errors: []
         }
     },
     methods:{
         register(){
+            this.errors = []
             axios.post(`/auth/register`, this.user)
             .then(res => {
-
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Register successfully'
+                })
             })
             .catch(err => {
-
+                this.errors = err.response.data.errors
+                Toast.fire({
+                    icon: 'warning',
+                    title: 'Register fail!'
+                })
             })
         }
     }

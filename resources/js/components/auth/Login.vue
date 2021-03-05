@@ -1,7 +1,6 @@
 <template>
-    <div>
         <div class="row justify-content-center">
-            <div class="col-xl-10 col-lg-12 col-md-9">
+            <div class="col-md-6 col-11">
                 <div class="card shadow-sm my-5">
                     <div class="card-body p-0">
                         <div class="row">
@@ -12,13 +11,15 @@
                                     </div>
                                     <form class="user" @submit.prevent="login">
                                         <div class="form-group">
-                                            <input v-model="form.email" type="email" class="form-control"
+                                            <input v-model="form.email" :class="{ 'is-invalid': errors.email }" type="email" class="form-control"
                                                    id="exampleInputEmail" aria-describedby="emailHelp"
                                                    placeholder="Enter Email Address">
+                                            <div v-if="errors.email" class="invalid-feedback">{{errors.email[0]}}</div>
                                         </div>
                                         <div class="form-group">
-                                            <input v-model="form.password" type="password" class="form-control"
+                                            <input v-model="form.password" :class="{ 'is-invalid': errors.password }"  type="password" class="form-control"
                                                    id="exampleInputPassword" placeholder="Password">
+                                            <div v-if="errors.password" class="invalid-feedback">{{errors.password[0]}}</div>
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small"
@@ -57,7 +58,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </template>
 
 <script>
@@ -79,6 +79,7 @@ export default {
     },
     methods: {
         login() {
+            this.errors = []
             axios.post(`/auth/login`, this.form)
                 .then(res => {
                     User.responseAfterLogin(res)
@@ -89,14 +90,22 @@ export default {
                     this.$router.push({name: 'home'})
                 })
                 .catch(err => {
-                    this.errors = err.response.data.error
+                    this.errors = err.response.data.errors
+                    if(err.response.data.error)
+                    {
+                        Toast.fire({
+                            icon: 'warning',
+                            title: err.response.data.error
+                        })
+                    }
+                    else {
+                        Toast.fire({
+                            icon: 'warning',
+                            title: 'Signed in fail!'
+                        })
+                    }
+
                 })
-                .catch(
-                    Toast.fire({
-                        icon: 'warning',
-                        title: 'Signed in fail!'
-                    })
-                )
         }
     }
 }

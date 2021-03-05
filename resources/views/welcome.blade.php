@@ -19,7 +19,7 @@
 <div id="app">
     <div id="wrapper">
         <!-- Sidebar -->
-        <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+        <ul v-if="$route.name !== 'login' && $route.name !== 'register'" class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
                 <div class="sidebar-brand-icon">
                     <img src="img/logo/logo2.png">
@@ -40,17 +40,25 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
                    aria-expanded="true" aria-controls="collapseBootstrap">
                     <i class="far fa-fw fa-window-maximize"></i>
-                    <span>Bootstrap UI</span>
+                    <span>Employee</span>
                 </a>
                 <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Bootstrap UI</h6>
-                        <a class="collapse-item" href="alerts.html">Alerts</a>
-                        <a class="collapse-item" href="buttons.html">Buttons</a>
-                        <a class="collapse-item" href="dropdowns.html">Dropdowns</a>
-                        <a class="collapse-item" href="modals.html">Modals</a>
-                        <a class="collapse-item" href="popovers.html">Popovers</a>
-                        <a class="collapse-item" href="progress-bar.html">Progress Bars</a>
+                        <router-link class="collapse-item" :to="{ name: 'users.index'}" >List</router-link>
+                        <router-link class="collapse-item" :to="{ name: 'users.create'}" >Create new</router-link>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap2"
+                   aria-expanded="true" aria-controls="collapseBootstrap2">
+                    <i class="far fa-fw fa-window-maximize"></i>
+                    <span>Supplier</span>
+                </a>
+                <div id="collapseBootstrap2" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <router-link class="collapse-item" to="" >List</router-link>
+                        <router-link class="collapse-item" to="" href="buttons.html">Create new</router-link>
                     </div>
                 </div>
             </li>
@@ -113,7 +121,7 @@
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <!-- TopBar -->
-                <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+                <nav v-if="$route.name !== 'login' && $route.name !== 'register'" class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
                     <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
@@ -270,11 +278,11 @@
                         </li>
                         <div class="topbar-divider d-none d-sm-block"></div>
                         <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">
+                            <router-link :to="{ name: 'logout'}" class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown"
+                                         aria-haspopup="true" aria-expanded="false">
                                 <img class="img-profile rounded-circle" src="img/boy.png" style="max-width: 60px">
-                                <span class="ml-2 d-none d-lg-inline text-white small">Maman Ketoprak</span>
-                            </a>
+                                <span class="ml-2 d-none d-lg-inline text-white small">Logout</span>
+                            </router-link>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -301,13 +309,14 @@
 
                 <!-- Container Fluid-->
                 <div class="container-fluid" id="container-wrapper">
-                    <router-view></router-view>
-                </div>
+                <router-view>
 
-                <!---Container Fluid-->
+                </router-view>
+                </div>
             </div>
         </div>
     </div>
+
 </div>
 
 
