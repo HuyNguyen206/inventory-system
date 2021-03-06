@@ -8,23 +8,30 @@ import AppStorage from "../../helpers/AppStorage";
 export default {
     name: "Logout",
     created() {
-        axios.post(`/auth/logout`, {}, {
-            headers: {Authorization: `Bearer ${AppStorage.getDataInLocalStorageByKey('token')}`}
-        })
-            .then(res => {
-                AppStorage.clear()
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Logout successfully'
-                })
-                this.$router.push({ name: 'login'})
+        let token = AppStorage.getDataInLocalStorageByKey('token');
+        if(token){
+            axios.post(`/auth/logout`, {}, {
+                headers: {Authorization: `Bearer ${token}`}
             })
-            .catch(err => {
-                Toast.fire({
-                    icon: 'warning',
-                    title: 'Logout Fail!'
+                .then(res => {
+                    AppStorage.clear()
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Logout successfully'
+                    })
+                    this.$router.push({ name: 'login'})
                 })
-            })
+                .catch(err => {
+                    Toast.fire({
+                        icon: 'warning',
+                        title: 'Logout Fail!'
+                    })
+                })
+        }
+        else{
+            this.$router.push({ name: 'login'})
+        }
+
 
     }
 }

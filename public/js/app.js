@@ -1908,6 +1908,7 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../helpers/AppStorage */ "./resources/js/helpers/AppStorage.js");
 //
 //
 //
@@ -2012,7 +2013,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  created: function created() {
+    if (!User.loggedInAlready()) {
+      this.$router.push({
+        name: 'login'
+      });
+    }
+  },
   name: "AddUser",
   data: function data() {
     return {
@@ -2028,6 +2064,55 @@ __webpack_require__.r(__webpack_exports__);
         image: ''
       }
     };
+  },
+  methods: {
+    onSeletedImage: function onSeletedImage(event) {
+      var _this = this;
+
+      console.log(event);
+      var file = event.target.files[0];
+
+      if (file.size > 1024 * 1024) {
+        Notification.notify('error', "File size can't not exceed 1MB");
+      } else {
+        var fileReader = new FileReader();
+
+        fileReader.onload = function (event) {
+          console.log(event);
+          console.log(event.target.result);
+          _this.form.image = event.target.result;
+        };
+
+        fileReader.readAsDataURL(file);
+      }
+    },
+    create: function create() {
+      var _this2 = this;
+
+      var token = _helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__["default"].getDataInLocalStorageByKey('token');
+
+      if (token) {
+        this.errors = [];
+        axios.post("/employees", this.form, {
+          headers: {
+            Authorization: "Bearer ".concat(token)
+          }
+        }).then(function (res) {
+          Notification.notify('success');
+
+          _this2.$router.push({
+            name: 'employees.index'
+          });
+        })["catch"](function (err) {
+          Notification.notify('error');
+          _this2.errors = err.response.data.errors;
+        });
+      } else {
+        this.$router.push({
+          name: 'login'
+        });
+      }
+    }
   }
 });
 
@@ -2652,26 +2737,34 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    axios.post("/auth/logout", {}, {
-      headers: {
-        Authorization: "Bearer ".concat(_helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__["default"].getDataInLocalStorageByKey('token'))
-      }
-    }).then(function (res) {
-      _helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__["default"].clear();
-      Toast.fire({
-        icon: 'success',
-        title: 'Logout successfully'
-      });
+    var token = _helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__["default"].getDataInLocalStorageByKey('token');
 
-      _this.$router.push({
+    if (token) {
+      axios.post("/auth/logout", {}, {
+        headers: {
+          Authorization: "Bearer ".concat(token)
+        }
+      }).then(function (res) {
+        _helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__["default"].clear();
+        Toast.fire({
+          icon: 'success',
+          title: 'Logout successfully'
+        });
+
+        _this.$router.push({
+          name: 'login'
+        });
+      })["catch"](function (err) {
+        Toast.fire({
+          icon: 'warning',
+          title: 'Logout Fail!'
+        });
+      });
+    } else {
+      this.$router.push({
         name: 'login'
       });
-    })["catch"](function (err) {
-      Toast.fire({
-        icon: 'warning',
-        title: 'Logout Fail!'
-      });
-    });
+    }
   }
 });
 
@@ -45249,7 +45342,7 @@ var render = function() {
                 _c("div", { staticClass: "login-form" }, [
                   _vm._m(0),
                   _vm._v(" "),
-                  _c("form", [
+                  _c("form", { attrs: { enctype: "multipart/form-data" } }, [
                     _c("div", { staticClass: "form-group" }, [
                       _c("div", { staticClass: "form-row" }, [
                         _c("div", { staticClass: "col-md-6" }, [
@@ -45278,7 +45371,11 @@ var render = function() {
                           _vm._v(" "),
                           _vm.errors.name
                             ? _c("div", { staticClass: "invalid-feedback" }, [
-                                _vm._v(" " + _vm._s(_vm.errors.name[0]))
+                                _vm._v(
+                                  "\n                                                    " +
+                                    _vm._s(_vm.errors.name[0]) +
+                                    "\n                                                "
+                                )
                               ])
                             : _vm._e()
                         ]),
@@ -45313,7 +45410,11 @@ var render = function() {
                           _vm._v(" "),
                           _vm.errors.email
                             ? _c("div", { staticClass: "invalid-feedback" }, [
-                                _vm._v(" " + _vm._s(_vm.errors.email[0]))
+                                _vm._v(
+                                  "\n                                                    " +
+                                    _vm._s(_vm.errors.email[0]) +
+                                    "\n                                                "
+                                )
                               ])
                             : _vm._e()
                         ])
@@ -45355,7 +45456,11 @@ var render = function() {
                           _vm._v(" "),
                           _vm.errors.address
                             ? _c("div", { staticClass: "invalid-feedback" }, [
-                                _vm._v(" " + _vm._s(_vm.errors.address[0]))
+                                _vm._v(
+                                  "\n                                                    " +
+                                    _vm._s(_vm.errors.address[0]) +
+                                    "\n                                                "
+                                )
                               ])
                             : _vm._e()
                         ]),
@@ -45394,7 +45499,11 @@ var render = function() {
                           _vm._v(" "),
                           _vm.errors.salary
                             ? _c("div", { staticClass: "invalid-feedback" }, [
-                                _vm._v(" " + _vm._s(_vm.errors.salary[0]))
+                                _vm._v(
+                                  "\n                                                    " +
+                                    _vm._s(_vm.errors.salary[0]) +
+                                    "\n                                                "
+                                )
                               ])
                             : _vm._e()
                         ])
@@ -45436,7 +45545,11 @@ var render = function() {
                           _vm._v(" "),
                           _vm.errors.joining_date
                             ? _c("div", { staticClass: "invalid-feedback" }, [
-                                _vm._v(" " + _vm._s(_vm.errors.joining_date[0]))
+                                _vm._v(
+                                  "\n                                                    " +
+                                    _vm._s(_vm.errors.joining_date[0]) +
+                                    "\n                                                "
+                                )
                               ])
                             : _vm._e()
                         ]),
@@ -45471,7 +45584,11 @@ var render = function() {
                           _vm._v(" "),
                           _vm.errors.nid
                             ? _c("div", { staticClass: "invalid-feedback" }, [
-                                _vm._v(" " + _vm._s(_vm.errors.nid[0]))
+                                _vm._v(
+                                  "\n                                                    " +
+                                    _vm._s(_vm.errors.nid[0]) +
+                                    "\n                                                "
+                                )
                               ])
                             : _vm._e()
                         ])
@@ -45491,8 +45608,8 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
+                            class: { "is-invalid": _vm.errors.phone },
                             attrs: {
-                              clphoneass: { "is-invalid": _vm.errors.phone },
                               type: "tel",
                               id: "exampleInputFirstName",
                               placeholder: "Enter phone"
@@ -45510,14 +45627,50 @@ var render = function() {
                           _vm._v(" "),
                           _vm.errors.phone
                             ? _c("div", { staticClass: "invalid-feedback" }, [
-                                _vm._v(" " + _vm._s(_vm.errors.phone[0]))
+                                _vm._v(
+                                  "\n                                                    " +
+                                    _vm._s(_vm.errors.phone[0]) +
+                                    "\n                                                "
+                                )
                               ])
                             : _vm._e()
                         ])
                       ])
                     ]),
                     _vm._v(" "),
-                    _vm._m(1),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("div", { staticClass: "form-row" }, [
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c("div", { staticClass: "custom-file" }, [
+                            _c("input", {
+                              staticClass: "custom-file-input",
+                              attrs: { type: "file", id: "customFile" },
+                              on: { change: _vm.onSeletedImage }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "custom-file-label",
+                                attrs: { for: "customFile" }
+                              },
+                              [
+                                _vm._v(
+                                  "Choose\n                                                        file"
+                                )
+                              ]
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c("img", {
+                            staticStyle: { width: "100%" },
+                            attrs: { src: _vm.form.image, alt: "" }
+                          })
+                        ])
+                      ])
+                    ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "form-group" }, [
                       _c(
@@ -45532,7 +45685,11 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("Create")]
+                        [
+                          _vm._v(
+                            "Create\n                                        "
+                          )
+                        ]
                       )
                     ])
                   ])
@@ -45553,36 +45710,6 @@ var staticRenderFns = [
     return _c("div", { staticClass: "text-center" }, [
       _c("h1", { staticClass: "h4 text-gray-900 mb-4" }, [
         _vm._v("Add employee")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("div", { staticClass: "form-row" }, [
-        _c("div", { staticClass: "col-md-6" }, [
-          _c("div", { staticClass: "custom-file" }, [
-            _c("input", {
-              staticClass: "custom-file-input",
-              attrs: { type: "file", id: "customFile" }
-            }),
-            _vm._v(" "),
-            _c(
-              "label",
-              {
-                staticClass: "custom-file-label",
-                attrs: { for: "customFile" }
-              },
-              [_vm._v("Choose file")]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-md-6" }, [
-          _c("img", { attrs: { src: "form.image", alt: "" } })
-        ])
       ])
     ])
   }
@@ -64033,12 +64160,28 @@ var AppStorage = /*#__PURE__*/function () {
   _createClass(AppStorage, [{
     key: "storeToken",
     value: function storeToken(token) {
-      localStorage.setItem('token', token);
+      var item = this.createKeyWithTTL(token);
+      localStorage.setItem('token', JSON.stringify(item));
     }
   }, {
     key: "storeUser",
     value: function storeUser(user) {
-      localStorage.setItem('user', JSON.stringify(user));
+      var item = this.createKeyWithTTL(user);
+      localStorage.setItem('user', JSON.stringify(item));
+    }
+  }, {
+    key: "createKeyWithTTL",
+    value: function createKeyWithTTL(value) {
+      var now = new Date();
+      var ttl = 1000 * 60 * 60; //In milisecond
+      // `item` is an object which contains the original value
+      // as well as the time when it's supposed to expire
+
+      var item = {
+        value: value,
+        expiry: now.getTime() + ttl
+      };
+      return item;
     }
   }, {
     key: "store",
@@ -64049,9 +64192,26 @@ var AppStorage = /*#__PURE__*/function () {
   }, {
     key: "getDataInLocalStorageByKey",
     value: function getDataInLocalStorageByKey(key) {
-      if (key == 'user') {
-        return JSON.parse(localStorage.getItem(key));
-      } else return localStorage.getItem(key);
+      // if(key == 'user'){
+      var data = JSON.parse(localStorage.getItem(key));
+      console.log(data);
+
+      if (data) {
+        console.log('has data');
+        var now = new Date();
+
+        if (now.getTime() > data.expiry) {
+          localStorage.removeItem(key);
+          return null;
+        } else {
+          return data.value;
+        }
+      } else {
+        return null;
+      } // }
+      // else
+      //     return localStorage.getItem(key)
+
     }
   }, {
     key: "clear",
@@ -64091,22 +64251,32 @@ var Notification = /*#__PURE__*/function () {
   _createClass(Notification, [{
     key: "notify",
     value: function notify($type) {
-      var message;
+      var message = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      console.log($type, message);
 
-      switch ($type) {
-        case 'success':
-          message = 'Successfully Done!';
+      if (!message) {
+        console.log($type, message);
 
-        case 'alert':
-          message = 'Are you sure?';
+        switch ($type) {
+          case 'success':
+            message = 'Successfully Done!';
+            break;
 
-        case 'error':
-          message = 'Something went wrong!';
+          case 'alert':
+            message = 'Are you sure?';
+            break;
 
-        case 'warning':
-          message = 'Opps Wrong!';
+          case 'error':
+            message = 'Something went wrong!';
+            break;
+
+          case 'warning':
+            message = 'Opps Wrong!';
+            break;
+        }
       }
 
+      console.log($type, message);
       new Noty({
         type: $type,
         text: message,
@@ -64293,13 +64463,13 @@ var routes = [{
   component: _components_auth_Logout__WEBPACK_IMPORTED_MODULE_4__["default"],
   name: 'logout'
 }, {
-  path: '/users/create',
+  path: '/employees/create',
   component: _components_Employee_AddUser__WEBPACK_IMPORTED_MODULE_5__["default"],
-  name: 'users.create'
+  name: 'employees.create'
 }, {
-  path: '/users',
+  path: '/employees',
   component: _components_Employee_ListUser__WEBPACK_IMPORTED_MODULE_6__["default"],
-  name: 'users.index'
+  name: 'employees.index'
 } // {
 //     path: '/bar',
 //     component: Bar
@@ -64328,8 +64498,8 @@ var routes = [{
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/lehuy/HuyDev/inventory-system/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/lehuy/HuyDev/inventory-system/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\xampp\htdocs\inventory-system\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\xampp\htdocs\inventory-system\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -1,9 +1,23 @@
 class AppStorage {
     storeToken(token){
-        localStorage.setItem('token', token)
+        let item = this.createKeyWithTTL(token)
+        localStorage.setItem('token', JSON.stringify(item))
     }
     storeUser(user){
-        localStorage.setItem('user', JSON.stringify(user))
+        let item = this.createKeyWithTTL(user)
+        localStorage.setItem('user', JSON.stringify(item))
+    }
+    createKeyWithTTL(value){
+        const now = new Date()
+        let ttl = 1000 * 60 * 60;
+        //In milisecond
+        // `item` is an object which contains the original value
+        // as well as the time when it's supposed to expire
+        const item = {
+            value,
+            expiry: now.getTime() + ttl,
+        }
+        return item
     }
     store(token, user)
     {
@@ -11,11 +25,28 @@ class AppStorage {
         this.storeUser(user)
     }
    getDataInLocalStorageByKey(key){
-        if(key == 'user'){
-           return JSON.parse(localStorage.getItem(key))
-        }
-        else
-            return localStorage.getItem(key)
+        // if(key == 'user'){
+           let data = JSON.parse(localStorage.getItem(key));
+           console.log(data)
+           if(data){
+               console.log('has data')
+               let now = new Date()
+               if(now.getTime() > data.expiry){
+                   localStorage.removeItem(key)
+                   return null
+               }
+               else
+               {
+                   return data.value
+               }
+           }
+           else{
+               return null
+           }
+
+        // }
+        // else
+        //     return localStorage.getItem(key)
    }
    clear(){
         localStorage.removeItem('token')

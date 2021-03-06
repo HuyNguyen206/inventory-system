@@ -1,17 +1,26 @@
 class Notification {
-    notify($type) {
-        let message;
-        switch ($type) {
-            case 'success':
-                message = 'Successfully Done!'
-            case 'alert':
-                message = 'Are you sure?'
-            case 'error':
-                message = 'Something went wrong!'
-            case 'warning':
-                message = 'Opps Wrong!'
+    notify($type, message=null) {
+        console.log($type,message )
+        if(!message){
+            console.log($type,message )
+            switch ($type) {
+                case 'success':
+                    message = 'Successfully Done!'
+                    break;
+                case 'alert':
+                    message = 'Are you sure?'
+                    break;
+                case 'error':
+                    message = 'Something went wrong!'
+                    break;
+                case 'warning':
+                    message = 'Opps Wrong!'
+                    break;
 
+            }
         }
+        console.log($type,message )
+
         new Noty({
             type: $type,
             text: message,

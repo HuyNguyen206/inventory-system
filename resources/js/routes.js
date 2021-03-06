@@ -32,14 +32,14 @@ const routes = [
         name: 'logout'
     },
     {
-        path: '/users/create',
+        path: '/employees/create',
         component: AddUser,
-        name: 'users.create'
+        name: 'employees.create'
     },
     {
-        path: '/users',
+        path: '/employees',
         component: ListUser,
-        name: 'users.index'
+        name: 'employees.index'
     },
     // {
     //     path: '/bar',
