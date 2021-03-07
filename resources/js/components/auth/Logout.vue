@@ -4,12 +4,13 @@
 
 <script>
 import AppStorage from "../../helpers/AppStorage";
+import helper from "../../mixins/helper";
 
 export default {
     name: "Logout",
+    mixins: [helper],
     created() {
-        let token = AppStorage.getDataInLocalStorageByKey('token');
-        if(token){
+        let token = this.checkLogin();
             axios.post(`/auth/logout`, {}, {
                 headers: {Authorization: `Bearer ${token}`}
             })
@@ -27,11 +28,6 @@ export default {
                         title: 'Logout Fail!'
                     })
                 })
-        }
-        else{
-            this.$router.push({ name: 'login'})
-        }
-
 
     }
 }

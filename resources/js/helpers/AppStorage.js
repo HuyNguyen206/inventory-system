@@ -9,7 +9,7 @@ class AppStorage {
     }
     createKeyWithTTL(value){
         const now = new Date()
-        let ttl = 1000 * 60 * 60;
+        let ttl = 1000 * 60 * 60 * 3;
         //In milisecond
         // `item` is an object which contains the original value
         // as well as the time when it's supposed to expire
@@ -32,7 +32,8 @@ class AppStorage {
                console.log('has data')
                let now = new Date()
                if(now.getTime() > data.expiry){
-                   localStorage.removeItem(key)
+                   localStorage.removeItem('token')
+                   localStorage.removeItem('user')
                    return null
                }
                else

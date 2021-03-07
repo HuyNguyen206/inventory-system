@@ -19,7 +19,7 @@
 <div id="app">
     <div id="wrapper">
         <!-- Sidebar -->
-        <ul v-if="$route.name !== 'login' && $route.name !== 'register'" class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+        <ul v-show="$route.name !== 'login' && $route.name !== 'register'" v-cloak  class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
                 <div class="sidebar-brand-icon">
                     <img src="img/logo/logo2.png">
@@ -121,7 +121,7 @@
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <!-- TopBar -->
-                <nav v-if="$route.name !== 'login' && $route.name !== 'register'" class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+                <nav v-if="$route.name !== 'login' && $route.name !== 'register'" v-cloak class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
                     <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>

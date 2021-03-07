@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import Logout from "./components/auth/Logout";
 import AddUser from "./components/Employee/AddUser";
 import ListUser from "./components/Employee/ListUser";
+import EditUser from "./components/Employee/EditUser";
 const routes = [
     {
         path: '/',
@@ -40,6 +41,11 @@ const routes = [
         path: '/employees',
         component: ListUser,
         name: 'employees.index'
+    },
+    {
+        path: '/employees/:id/edit',
+        component: EditUser,
+        name: 'employees.edit'
     },
     // {
     //     path: '/bar',

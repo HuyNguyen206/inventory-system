@@ -13,7 +13,7 @@
                             <div class="col-lg-12">
                                 <div class="login-form">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Add employee</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Edit employee</h1>
                                     </div>
                                     <form enctype="multipart/form-data">
                                         <div class="form-group">
@@ -108,13 +108,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <img :src="form.image" alt="" style="width: 200px">
+                                                    <img :src="`${originImage}`" alt="" style="width: 200px">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-block"
-                                                    @click.prevent="create">Create
+                                            <button type="submit" class="btn btn-primary btn-block" @click.prevent="update">Update
                                             </button>
                                         </div>
                                     </form>
@@ -126,21 +125,17 @@
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
-import AppStorage from "../../helpers/AppStorage";
 import helper from "../../mixins/helper";
 
 export default {
+    name: "EditUser",
     mixins: [helper],
-    created() {
-        this.checkLogin()
-    },
-    name: "AddUser",
     data() {
         return {
+            id: this.$route.params.id,
             form: {
                 name: '',
                 email: '',
@@ -150,10 +145,25 @@ export default {
                 nid: '',
                 phone: '',
                 image: ''
-            }
+            },
+            originImage: ''
         }
     },
-    methods: {
+    created() {
+        let token = this.checkLogin()
+        axios.get(`/employees/${this.id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then(res => {
+            this.form = res.data
+            this.originImage =`/storage/${this.form.image}`
+            this.form.image = ''
+        }).catch(err => {
+            Notification.notify('error', err.response.data.message)
+        })
+    },
+    methods:{
         onSeletedImage(event) {
             console.log(event)
             let file = event.target.files[0];
@@ -165,30 +175,31 @@ export default {
                     console.log(event)
                     console.log(event.target.result)
                     this.form.image = event.target.result
+                    this.originImage = event.target.result
                 }
                 fileReader.readAsDataURL(file)
             }
         },
-        create() {
-            let token = this.checkLogin();
-                this.errors = [];
-                axios.post(`/employees`, this.form, {
-                    headers: {Authorization: `Bearer ${token}`}
-                })
-                    .then(res => {
-                        Notification.notify('success')
-                        this.$router.push({name: 'employees.index'})
-                    })
-                    .catch(err => {
-                        if(err.response.data.errors){
-                            this.errors = err.response.data.errors
-                        }
-                        else{
-                            Notification.notify('error', err.response.data.message)
-                        }
-                    })
+        update(){
+            let token = this.checkLogin()
+            this.errors = []
+            axios.put(`/employees/${this.id}`,this.form, {
+                headers:{
+                    Authorization: `Bearer ${token}`
+                }
+            }).then(res => {
+                Notification.notify('success')
+            }).catch(err => {
+                if(err.response.data.errors){
+                    this.errors = err.response.data.errors
+                }
+                else{
+                    Notification.notify('error', err.response.data.message)
+                }
+            })
         }
     }
+
 }
 </script>
 

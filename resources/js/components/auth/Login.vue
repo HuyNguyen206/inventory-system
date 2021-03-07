@@ -73,9 +73,7 @@ export default {
         }
     },
     created() {
-        if (User.loggedInAlready()) {
-            this.$router.push({name: 'home'})
-        }
+       User.checkLogin()
     },
     methods: {
         login() {

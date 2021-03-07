@@ -345,12 +345,13 @@
 </template>
 
 <script>
+import helper from "../mixins/helper";
+
 export default {
     name: "Home",
+    mixins: [helper],
     created() {
-        if (!User.loggedInAlready()) {
-            this.$router.push({name: 'login'})
-        }
+        this.checkLogin()
     }
 }
 </script>
