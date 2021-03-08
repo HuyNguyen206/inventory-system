@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <div class="col-12">
-                <router-link class="btn btn-primary m-2" :to="{ name: 'employees.index'}">List employee</router-link>
+                <router-link class="btn btn-primary m-2" :to="{ name: 'suppliers.index'}">List supplier</router-link>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -13,7 +13,7 @@
                             <div class="col-lg-12">
                                 <div class="login-form">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Edit employee</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Edit supplier</h1>
                                     </div>
                                     <form enctype="multipart/form-data">
                                         <div class="form-group">
@@ -50,48 +50,24 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <input v-model='form.salary' :class="{ 'is-invalid': errors.salary}"
-                                                           type="number" class="form-control"
-                                                           aria-describedby="emailHelp"
-                                                           placeholder="Enter salary">
-                                                    <div class="invalid-feedback" v-if="errors.salary">
-                                                        {{ errors.salary[0] }}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="form-row">
-                                                <div class="col-md-6">
-                                                    <input v-model='form.joining_date'
-                                                           :class="{ 'is-invalid': errors.joining_date}" type="date"
-                                                           class="form-control"
-                                                           placeholder="Enter joining_date">
-                                                    <div class="invalid-feedback" v-if="errors.joining_date">
-                                                        {{ errors.joining_date[0] }}
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <input v-model='form.nid' :class="{ 'is-invalid': errors.nid}"
-                                                           type="text" class="form-control"
-                                                           aria-describedby="emailHelp"
-                                                           placeholder="Enter NID">
-                                                    <div class="invalid-feedback" v-if="errors.nid">
-                                                        {{ errors.nid[0] }}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="form-row">
-                                                <div class="col-md-6">
                                                     <input v-model='form.phone' :class="{ 'is-invalid': errors.phone}"
-                                                           type="tel" class="form-control" id="exampleInputFirstName"
+                                                           type="tel" class="form-control"
                                                            placeholder="Enter phone">
                                                     <div class="invalid-feedback" v-if="errors.phone">
                                                         {{ errors.phone[0] }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="form-row">
+                                                <div class="col-md-6">
+                                                    <input v-model='form.shop_name' :class="{ 'is-invalid': errors.shop_name}"
+                                                           type="tel" class="form-control"
+                                                           placeholder="Enter shop name">
+                                                    <div class="invalid-feedback" v-if="errors.shop_name">
+                                                        {{ errors.shop_name[0] }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -131,7 +107,7 @@
 import helper from "../../mixins/helper";
 
 export default {
-    name: "EditUser",
+    name: "EditSupplier",
     mixins: [helper],
     data() {
         return {
@@ -140,18 +116,16 @@ export default {
                 name: '',
                 email: '',
                 address: '',
-                salary: '',
-                joining_date: '',
-                nid: '',
                 phone: '',
-                image: ''
+                image: '',
+                shop_name: ''
             },
             originImage: ''
         }
     },
     created() {
         let token = this.checkLogin()
-        axios.get(`/employees/${this.id}`, {
+        axios.get(`/suppliers/${this.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -183,7 +157,7 @@ export default {
         update(){
             let token = this.checkLogin()
             this.errors = []
-            axios.put(`/employees/${this.id}`,this.form, {
+            axios.put(`/suppliers/${this.id}`,this.form, {
                 headers:{
                     Authorization: `Bearer ${token}`
                 }

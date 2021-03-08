@@ -61,8 +61,11 @@
 </template>
 
 <script>
+import helper from "../../mixins/helper";
+
 export default {
     name: "Login",
+    mixins: [helper],
     data() {
         return {
             form: {
@@ -73,7 +76,10 @@ export default {
         }
     },
     created() {
-       User.checkLogin()
+       if(User.loggedInAlready())
+       {
+           this.$router.push({name: 'home'})
+       }
     },
     methods: {
         login() {

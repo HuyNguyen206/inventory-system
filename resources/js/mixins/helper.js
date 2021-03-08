@@ -4,7 +4,7 @@ export default {
     methods:{
         checkLogin(){
             if (!User.loggedInAlready()) {
-                this.$router.push({name: 'login'})
+              return this.$router.push({name: 'login'})
             }
             else{
                 const token = AppStorage.getDataInLocalStorageByKey('token')

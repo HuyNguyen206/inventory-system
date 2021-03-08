@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Employee</h1>
+            <h1 class="h3 mb-0 text-gray-800">Category</h1>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="./">Home</a></li>
                 <li class="breadcrumb-item">Tables</li>
@@ -12,6 +12,11 @@
             <div class="col-md-4">
                 <input type="text" v-model="search" @change="search" class="form-control"
                        placeholder="Input your search">
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-md-4">
+                <router-link :to="{name: 'categories.create'}" class="btn btn-primary">Add</router-link>
             </div>
         </div>
         <div class="row">
@@ -27,31 +32,17 @@
                             <tr>
                                 <th>STT</th>
                                 <th>Name</th>
-                                <th>Email</th>
-                                <th>Address</th>
-                                <th>Salary</th>
-                                <th>Joining Date</th>
-                                <th>NID</th>
-                                <th>Phone</th>
-                                <th>Image</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="(e, index) in filterSearch" :key="e.id">
+                            <tr v-for="(category, index) in filterSearch" :key="category.id">
                                 <td><a href="#">{{ index += 1 }}</a></td>
-                                <td>{{ e.name }}</td>
-                                <td>{{ e.email }}</td>
-                                <td>{{ e.address }}</td>
-                                <td>{{ e.salary }}</td>
-                                <td>{{ e.joining_date }}</td>
-                                <td>{{ e.nid }}</td>
-                                <td>{{ e.phone }}</td>
-                                <td><img style="width: 100%;" :src="`storage/${e.image}`" alt=""></td>
+                                <td>{{ category.name }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <router-link :to="{name: 'employees.edit', params: {id: e.id}}" class="btn btn-primary">Edit</router-link>
-                                        <a @click.prevent="deleteEmployee(e.id)" class="btn btn-danger text-white">Delete</a>
+                                        <router-link :to="{name: 'categories.edit', params: {id: category.id}}" class="btn btn-primary">Edit</router-link>
+                                        <a @click.prevent="deleteCategory(category.id)" class="btn btn-danger text-white">Delete</a>
                                     </div>
                                 </td>
                             </tr>
@@ -70,16 +61,16 @@ import AppStorage from "../../helpers/AppStorage";
 import helper from "../../mixins/helper";
 
 export default {
-    name: "ListUser",
+    name: "ListSupplier",
     mixins: [helper],
     data() {
         return {
-            employees: [],
+            categories: [],
             search: ''
         }
     },
     methods: {
-        deleteEmployee(id) {
+        deleteCategory(id) {
             let token = this.checkLogin();
             Swal.fire({
                 title: 'Are you sure?',
@@ -91,18 +82,18 @@ export default {
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    axios.delete(`/employees/${id}`, {
+                    axios.delete(`/categories/${id}`, {
                         headers: {
                             Authorization: `Bearer ${token}`
                         }
                     }).then(res => {
                         Swal.fire(
                             'Deleted!',
-                            'This employee has been deleted.',
+                            'This category has been deleted.',
                             'success'
                         )
-                        this.employees = this.employees.filter(e => {
-                            return e.id !== id
+                        this.categories = this.categories.filter(category => {
+                            return category.id !== id
                         })
                     })
                         .catch(err => {
@@ -114,9 +105,9 @@ export default {
         },
         fetch() {
             let token = this.checkLogin();
-            axios.get(`/employees`, {headers: {Authorization: `Bearer ${token}`}})
+            axios.get(`/categories`, {headers: {Authorization: `Bearer ${token}`}})
                 .then(res => {
-                    this.employees = res.data.data
+                    this.categories = res.data.data
                 })
                 .catch(err => {
                     Notification.notify('error', err.response.data.message)
@@ -129,8 +120,8 @@ export default {
     },
     computed: {
         filterSearch() {
-            return this.employees.filter(e => {
-                return e.name.match(this.search) || e.email.match(this.search) || e.address.match(this.search)
+            return this.categories.filter(category => {
+                return category.name.match(this.search)
             })
         }
     }

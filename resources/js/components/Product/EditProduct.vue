@@ -131,7 +131,7 @@
 import helper from "../../mixins/helper";
 
 export default {
-    name: "EditUser",
+    name: "EditProduct",
     mixins: [helper],
     data() {
         return {

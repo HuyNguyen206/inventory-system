@@ -30,6 +30,11 @@ Route::group([
     Route::post('register', 'AuthController@register');
 });
 
-Route::middleware('jwt')->namespace('Api')->group(function(){
-    Route::apiResource('employees', 'EmployeeController');
+Route::middleware('jwt')->namespace('API')->group(function () {
+    Route::apiResources([
+        'employees' => 'EmployeeController',
+        'suppliers' => 'SupplierController',
+        'categories' => 'CategoryController',
+        'products' => 'ProductController',
+    ]);
 });

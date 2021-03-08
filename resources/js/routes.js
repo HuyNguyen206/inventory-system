@@ -6,6 +6,15 @@ import Logout from "./components/auth/Logout";
 import AddUser from "./components/Employee/AddUser";
 import ListUser from "./components/Employee/ListUser";
 import EditUser from "./components/Employee/EditUser";
+import AddSupplier from "./components/Supplier/AddSupplier";
+import ListSupplier from "./components/Supplier/ListSupplier";
+import EditSupplier from "./components/Supplier/EditSupplier";
+import AddCategory from "./components/Category/AddCategory";
+import ListCategory from "./components/Category/ListCategory";
+import EditCategory from "./components/Category/EditCategory";
+import AddProduct from "./components/Product/AddProduct";
+import ListProduct from "./components/Product/ListProduct";
+import EditProduct from "./components/Product/EditProduct";
 const routes = [
     {
         path: '/',
@@ -46,6 +55,51 @@ const routes = [
         path: '/employees/:id/edit',
         component: EditUser,
         name: 'employees.edit'
+    },
+    {
+        path: '/suppliers/create',
+        component: AddSupplier,
+        name: 'suppliers.create'
+    },
+    {
+        path: '/suppliers',
+        component: ListSupplier,
+        name: 'suppliers.index'
+    },
+    {
+        path: '/suppliers/:id/edit',
+        component: EditSupplier,
+        name: 'suppliers.edit'
+    },
+    {
+        path: '/categories/create',
+        component: AddCategory,
+        name: 'categories.create'
+    },
+    {
+        path: '/categories',
+        component: ListCategory,
+        name: 'categories.index'
+    },
+    {
+        path: '/categories/:id/edit',
+        component: EditCategory,
+        name: 'categories.edit'
+    },
+    {
+        path: '/products/create',
+        component: AddProduct,
+        name: 'products.create'
+    },
+    {
+        path: '/products',
+        component: ListProduct,
+        name: 'products.index'
+    },
+    {
+        path: '/products/:id/edit',
+        component: EditProduct,
+        name: 'products.edit'
     },
     // {
     //     path: '/bar',

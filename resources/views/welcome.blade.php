@@ -22,7 +22,7 @@
         <ul v-show="$route.name !== 'login' && $route.name !== 'register'" v-cloak  class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
                 <div class="sidebar-brand-icon">
-                    <img src="img/logo/logo2.png">
+                    <img src="{{asset('backend/img/logo/logo2.png')}}">
                 </div>
                 <div class="sidebar-brand-text mx-3">RuangAdmin</div>
             </a>
@@ -57,8 +57,34 @@
                 </a>
                 <div id="collapseBootstrap2" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <router-link class="collapse-item" to="" >List</router-link>
-                        <router-link class="collapse-item" to="" href="buttons.html">Create new</router-link>
+                        <router-link class="collapse-item" :to="{name: 'suppliers.index'}" >List</router-link>
+                        <router-link class="collapse-item" :to="{name: 'suppliers.create'}">Create new</router-link>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap3"
+                   aria-expanded="true" aria-controls="collapseBootstrap3">
+                    <i class="far fa-fw fa-window-maximize"></i>
+                    <span>Category</span>
+                </a>
+                <div id="collapseBootstrap3" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <router-link class="collapse-item" :to="{name: 'categories.index'}" >List</router-link>
+                        <router-link class="collapse-item" :to="{name: 'categories.create'}">Create new</router-link>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap4"
+                   aria-expanded="true" aria-controls="collapseBootstrap4">
+                    <i class="far fa-fw fa-window-maximize"></i>
+                    <span>Product</span>
+                </a>
+                <div id="collapseBootstrap4" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <router-link class="collapse-item" :to="{name: 'products.index'}" >List</router-link>
+                        <router-link class="collapse-item" :to="{name: 'products.create'}">Create new</router-link>
                     </div>
                 </div>
             </li>

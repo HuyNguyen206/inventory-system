@@ -46,7 +46,11 @@ class EmployeeController extends Controller
                 $postion = strpos($imageEncodeBase64, ';');
                 $ext = explode('/', substr($imageEncodeBase64, 0, $postion))[1];
                 $fileName = Str::uuid() . '.' . $ext;
-                $filePath = public_path('storage/employee') . '/' . $fileName;
+                $rootPublicPath = public_path('storage/employee');
+                if (!file_exists($rootPublicPath)) {
+                    mkdir($rootPublicPath, 0777, true);
+                }
+                $filePath = $rootPublicPath . '/' . $fileName;
                 Image::make($imageEncodeBase64)->resize(200, 240)->save($filePath);
                 $employee->image = "employee/$fileName";
             }
@@ -128,7 +132,7 @@ class EmployeeController extends Controller
         try {
             $employee = Employee::findOrFail($id);
             if ($employee->image) {
-                $filePath = public_path('Storage') . '/' . $employee->image;
+                $filePath = public_path('storage') . '/' . $employee->image;
                 if (file_exists($filePath)) {
                     unlink($filePath);
                 }

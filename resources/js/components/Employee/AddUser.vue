@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <div class="col-12">
-                <router-link class="btn btn-primary m-2" :to="{ name: 'users.index'}">List employee</router-link>
+                <router-link class="btn btn-primary m-2" :to="{ name: 'employees.index'}">List employee</router-link>
             </div>
         </div>
         <div class="row justify-content-center">
