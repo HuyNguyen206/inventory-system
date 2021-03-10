@@ -36,5 +36,6 @@ Route::middleware('jwt')->namespace('API')->group(function () {
         'suppliers' => 'SupplierController',
         'categories' => 'CategoryController',
         'products' => 'ProductController',
+        'expenses' => 'ExpenseController',
     ]);
 });

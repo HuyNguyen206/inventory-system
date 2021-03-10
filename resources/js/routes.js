@@ -15,6 +15,11 @@ import EditCategory from "./components/Category/EditCategory";
 import AddProduct from "./components/Product/AddProduct";
 import ListProduct from "./components/Product/ListProduct";
 import EditProduct from "./components/Product/EditProduct";
+import AddExpense from "./components/Expense/AddExpense";
+import ListExpense from "./components/Expense/ListExpense";
+import EditExpense from "./components/Expense/EditExpense";
+import ListEmployee from "./components/Salary/ListEmployee";
+import PayEmployee from "./components/Salary/PayEmployee";
 const routes = [
     {
         path: '/',
@@ -101,6 +106,32 @@ const routes = [
         component: EditProduct,
         name: 'products.edit'
     },
+    {
+        path: '/expenses/create',
+        component: AddExpense,
+        name: 'expenses.create'
+    },
+    {
+        path: '/expenses',
+        component: ListExpense,
+        name: 'expenses.index'
+    },
+    {
+        path: '/expenses/:id/edit',
+        component: EditExpense,
+        name: 'expenses.edit'
+    },
+    {
+        path: '/salaries',
+        component: ListEmployee,
+        name: 'salaries.index'
+    },
+    {
+        path: '/salaries/:id/pay',
+        component: PayEmployee,
+        name: 'salaries.pay'
+    },
+
     // {
     //     path: '/bar',
     //     component: Bar

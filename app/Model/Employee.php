@@ -10,4 +10,7 @@ class Employee extends Model
     //
     use SoftDeletes;
     protected $guarded = [];
+    public function salaries(){
+        return $this->hasMany(Salary::class, 'employee_id');
+    }
 }

@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <div class="col-12">
-                <router-link class="btn btn-primary m-2" :to="{ name: 'employees.index'}">List employee</router-link>
+                <router-link class="btn btn-primary m-2" :to="{ name: 'products.index'}">List product</router-link>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -13,49 +13,26 @@
                             <div class="col-lg-12">
                                 <div class="login-form">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Edit employee</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Edit product</h1>
                                     </div>
                                     <form enctype="multipart/form-data">
                                         <div class="form-group">
                                             <div class="form-row">
                                                 <div class="col-md-6">
-                                                    <input v-model='form.name' :class="{ 'is-invalid': errors.name}"
+                                                    <input v-model='form.product_name' :class="{ 'is-invalid': errors.product_name}"
                                                            type="text" class="form-control"
                                                            placeholder="Enter Name">
-                                                    <div class="invalid-feedback" v-if="errors.name">
-                                                        {{ errors.name[0] }}
+                                                    <div class="invalid-feedback" v-if="errors.product_name">
+                                                        {{ errors.product_name[0] }}
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <input v-model='form.email' :class="{ 'is-invalid': errors.email}"
-                                                           type="email" class="form-control"
-                                                           aria-describedby="emailHelp"
-                                                           placeholder="Enter Email Address">
-                                                    <div class="invalid-feedback" v-if="errors.email">
-                                                        {{ errors.email[0] }}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="form-row">
-                                                <div class="col-md-6">
-                                                    <input v-model='form.address'
-                                                           :class="{ 'is-invalid': errors.address}" type="text"
-                                                           class="form-control"
-                                                           placeholder="Enter address">
-                                                    <div class="invalid-feedback" v-if="errors.address">
-                                                        {{ errors.address[0] }}
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <input v-model='form.salary' :class="{ 'is-invalid': errors.salary}"
-                                                           type="number" class="form-control"
-                                                           aria-describedby="emailHelp"
-                                                           placeholder="Enter salary">
-                                                    <div class="invalid-feedback" v-if="errors.salary">
-                                                        {{ errors.salary[0] }}
+                                                    <input v-model='form.product_code' :class="{ 'is-invalid': errors.product_code}"
+                                                           type="text" class="form-control"
+                                                           aria-describedby="product_codeHelp"
+                                                           placeholder="Enter Code">
+                                                    <div class="invalid-feedback" v-if="errors.product_code">
+                                                        {{ errors.product_code[0] }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -64,21 +41,55 @@
                                         <div class="form-group">
                                             <div class="form-row">
                                                 <div class="col-md-6">
-                                                    <input v-model='form.joining_date'
-                                                           :class="{ 'is-invalid': errors.joining_date}" type="date"
-                                                           class="form-control"
-                                                           placeholder="Enter joining_date">
-                                                    <div class="invalid-feedback" v-if="errors.joining_date">
-                                                        {{ errors.joining_date[0] }}
+                                                    <label for="category">Select Category</label>
+                                                    <select v-model="form.category_id" class="form-control" id="category" :class="{ 'is-invalid': errors.category_id}">
+                                                        <option selected value="-1" disabled>--Please select--</option>
+                                                        <option v-for="category in categories" :key="category.id" :value="category.id">{{category.name}}</option>
+                                                    </select>
+                                                    <div class="invalid-feedback" v-if="errors.category_id">
+                                                        {{ errors.category_id[0] }}
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <input v-model='form.nid' :class="{ 'is-invalid': errors.nid}"
+                                                    <label for="supplier">Select supplier</label>
+                                                    <select v-model="form.supplier_id" class="form-control" id="supplier" :class="{ 'is-invalid': errors.supplier_id}">
+                                                        <option selected value="-1" disabled>--Please select--</option>
+                                                        <option v-for="supplier in suppliers" :key="supplier.id" :value="supplier.id">{{supplier.name}}</option>
+                                                    </select>
+                                                    <div class="invalid-feedback" v-if="errors.supplier_id">
+                                                        {{ errors.supplier_id[0] }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="form-row">
+                                                <div class="col-md-4">
+                                                    <input v-model='form.root'
+                                                           :class="{ 'is-invalid': errors.root}" type="text"
+                                                           class="form-control"
+                                                           placeholder="Enter root">
+                                                    <div class="invalid-feedback" v-if="errors.root">
+                                                        {{ errors.root[0] }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input v-model='form.buying_price' :class="{ 'is-invalid': errors.buying_price}"
                                                            type="text" class="form-control"
                                                            aria-describedby="emailHelp"
-                                                           placeholder="Enter NID">
-                                                    <div class="invalid-feedback" v-if="errors.nid">
-                                                        {{ errors.nid[0] }}
+                                                           placeholder="Enter buying price">
+                                                    <div class="invalid-feedback" v-if="errors.buying_price">
+                                                        {{ errors.buying_price[0] }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <input v-model='form.selling_price' :class="{ 'is-invalid': errors.selling_price}"
+                                                           type="text" class="form-control"
+                                                           aria-describedby="emailHelp"
+                                                           placeholder="Enter selling price">
+                                                    <div class="invalid-feedback" v-if="errors.selling_price">
+                                                        {{ errors.selling_price[0] }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -87,11 +98,23 @@
                                         <div class="form-group">
                                             <div class="form-row">
                                                 <div class="col-md-6">
-                                                    <input v-model='form.phone' :class="{ 'is-invalid': errors.phone}"
-                                                           type="tel" class="form-control" id="exampleInputFirstName"
-                                                           placeholder="Enter phone">
-                                                    <div class="invalid-feedback" v-if="errors.phone">
-                                                        {{ errors.phone[0] }}
+                                                    <label for="supplier">Enter buying date</label>
+                                                    <input v-model='form.buying_date'
+                                                           :class="{ 'is-invalid': errors.buying_date}" type="date"
+                                                           class="form-control"
+                                                           placeholder="Enter buying date">
+                                                    <div class="invalid-feedback" v-if="errors.buying_date">
+                                                        {{ errors.buying_date[0] }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="supplier">Enter product quantity</label>
+                                                    <input v-model='form.product_quantity' :class="{ 'is-invalid': errors.product_quantity}"
+                                                           type="text" class="form-control"
+                                                           aria-describedby="emailHelp"
+                                                           placeholder="Enter product quantity">
+                                                    <div class="invalid-feedback" v-if="errors.product_quantity">
+                                                        {{ errors.product_quantity[0] }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -108,12 +131,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <img :src="`${originImage}`" alt="" style="width: 200px">
+                                                    <img :src="originImage" alt="" style="width: 200px">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-block" @click.prevent="update">Update
+                                            <button type="submit" class="btn btn-primary btn-block"
+                                                    @click.prevent="update">Update
                                             </button>
                                         </div>
                                     </form>
@@ -135,30 +159,54 @@ export default {
     mixins: [helper],
     data() {
         return {
-            id: this.$route.params.id,
             form: {
-                name: '',
-                email: '',
-                address: '',
-                salary: '',
-                joining_date: '',
-                nid: '',
-                phone: '',
-                image: ''
+                product_name: '',
+                product_code: '',
+                root: '',
+                image: '',
+                buying_price: '',
+                selling_price: '',
+                category_id: '',
+                supplier_id: '',
+                product_quantity: '',
+                buying_date: ''
             },
-            originImage: ''
+            categories:[],
+            suppliers: [],
+            originImage: '',
+            id: this.$route.params.id
         }
     },
     created() {
         let token = this.checkLogin()
-        axios.get(`/employees/${this.id}`, {
+        axios.get(`/products/${this.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }).then(res => {
-            this.form = res.data
+            this.form = res.data.data;
             this.originImage =`/storage/${this.form.image}`
             this.form.image = ''
+        }).catch(err => {
+            Notification.notify('error', err.response.data.message)
+        })
+        axios.get(`/categories`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then(res => {
+            this.categories = res.data.data
+        })
+            .catch(err => {
+                Notification.notify('error', err.response.data.message)
+            })
+
+        axios.get(`/suppliers`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then(res => {
+            this.suppliers = res.data.data
         }).catch(err => {
             Notification.notify('error', err.response.data.message)
         })
@@ -183,7 +231,7 @@ export default {
         update(){
             let token = this.checkLogin()
             this.errors = []
-            axios.put(`/employees/${this.id}`,this.form, {
+            axios.put(`/products/${this.id}`,this.form, {
                 headers:{
                     Authorization: `Bearer ${token}`
                 }

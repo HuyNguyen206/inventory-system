@@ -93,12 +93,8 @@ class EmployeeController extends Controller
         //
         try {
             $employee = Employee::findOrFail($id);
-            $employee->name = $request->name;
-            $employee->email = $request->email;
-            $employee->address = $request->address;
-            $employee->salary = $request->salary;
-            $employee->joining_date = $request->joining_date;
-            $employee->phone = $request->phone;
+            $originImage= $employee->image;
+            $employee->image = $originImage;
             if ($request->image) {
                 $oldImage = $employee->image;
                 $imageEncodeBase64 = $request->image;

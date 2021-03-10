@@ -25,7 +25,7 @@ class Notification {
             type: $type,
             text: message,
             layout: "topRight",
-            timeout: 1000
+            timeout: $type == 'error' ? 5000 : 1000
         }).show();
     }
 }

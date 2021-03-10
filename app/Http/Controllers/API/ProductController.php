@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Model\Product;
 use Illuminate\Http\Request;
@@ -70,6 +71,12 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         //
+        try {
+            return response()->success(new ProductResource($product));
+        }
+        catch (\Throwable $ex){
+            return response()->error($ex->getMessage());
+        }
     }
 
     /**
@@ -79,9 +86,32 @@ class ProductController extends Controller
      * @param  \App\Model\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(UpdateProductRequest $request, Product $product)
     {
         //
+        try {
+            $originImage= $product->image;
+            $product->fill($request->except(['category', 'supplier']));
+            $product->image = $originImage;
+            if ($request->image) {
+                $oldImage = $product->image;
+                $imageEncodeBase64 = $request->image;
+                $postion = strpos($imageEncodeBase64, ';');
+                $ext = explode('/', substr($imageEncodeBase64, 0, $postion))[1];
+                $fileName = Str::uuid() . '.' . $ext;
+                $filePath = public_path('storage/product') . '/' . $fileName;
+                Image::make($imageEncodeBase64)->resize(200, 240)->save($filePath);
+                $product->image = "product/$fileName";
+                $filePath = public_path('storage/'.$oldImage);
+                if(file_exists($filePath)){
+                    unlink($filePath);
+                }
+            }
+            $product->save();
+            return response()->success(new ProductResource($product));
+        } catch (\Throwable $ex) {
+            return response()->error($ex->getMessage());
+        }
     }
 
     /**
