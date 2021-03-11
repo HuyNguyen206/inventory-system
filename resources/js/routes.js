@@ -20,6 +20,9 @@ import ListExpense from "./components/Expense/ListExpense";
 import EditExpense from "./components/Expense/EditExpense";
 import ListEmployee from "./components/Salary/ListEmployee";
 import PayEmployee from "./components/Salary/PayEmployee";
+import ListSalary from "./components/Salary/ListSalary";
+import ListSalaryMonth from "./components/Salary/ListSalaryMonth";
+import EditEmployeeSalary from "./components/Salary/EditEmployeeSalary";
 const routes = [
     {
         path: '/',
@@ -123,13 +126,28 @@ const routes = [
     },
     {
         path: '/salaries',
-        component: ListEmployee,
+        component: ListSalary,
         name: 'salaries.index'
+    },
+    {
+        path: '/salaries/employees',
+        component: ListEmployee,
+        name: 'salaries.employee.index'
     },
     {
         path: '/salaries/:id/pay',
         component: PayEmployee,
         name: 'salaries.pay'
+    },
+    {
+        path: '/salaries/:month',
+        component: ListSalaryMonth,
+        name: 'salaries.detail'
+    },
+    {
+        path: '/salaries/edit/:id',
+        component: EditEmployeeSalary,
+        name: 'salaries.edit'
     },
 
     // {

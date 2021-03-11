@@ -77,7 +77,7 @@ class EmployeeController extends Controller
         }
         catch (\Throwable $ex)
         {
-            response()->error($ex->getMessage());
+            return response()->error($ex->getMessage());
         }
     }
 

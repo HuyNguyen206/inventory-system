@@ -38,4 +38,9 @@ Route::middleware('jwt')->namespace('API')->group(function () {
         'products' => 'ProductController',
         'expenses' => 'ExpenseController',
     ]);
+    Route::apiResource('salaries', 'SalaryController')->only(['show', 'index']);
+    Route::post('salaries/pay/{id}', 'SalaryController@paySalary');
+    Route::get('salaries/by-month/{month}', 'SalaryController@viewSalaryByMonth');
+    Route::get('salaries/edit-salary/{salary}', 'SalaryController@getSalaryById');
+    Route::post('salaries/update/{salary}', 'SalaryController@updateSalaryById');
 });

@@ -116,7 +116,8 @@
                 <div id="collapseBootstrap6" class="collapse" aria-labelledby="headingBootstrap"
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <router-link class="collapse-item" :to="{name: 'salaries.index'}">List employee salary</router-link>
+                        <router-link class="collapse-item" :to="{name: 'salaries.employee.index'}">List employee salary</router-link>
+                        <router-link class="collapse-item" :to="{name: 'salaries.index'}">List salary</router-link>
                     </div>
                 </div>
             </li>

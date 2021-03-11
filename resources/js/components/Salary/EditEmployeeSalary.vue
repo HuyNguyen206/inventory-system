@@ -13,7 +13,7 @@
                             <div class="col-lg-12">
                                 <div class="login-form">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Pay salary</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Edit salary</h1>
                                     </div>
                                     <form enctype="multipart/form-data">
                                         <div class="form-group">
@@ -75,7 +75,7 @@
 
                                         </div>
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-block" @click.prevent="pay">Pay
+                                            <button type="submit" class="btn btn-primary btn-block" @click.prevent="update">Update
                                             </button>
                                         </div>
                                     </form>
@@ -108,21 +108,21 @@ export default {
     },
     created() {
         let token = this.checkLogin()
-        axios.get(`/salaries/${this.id}`, {
+        axios.get(`/salaries/edit-salary/${this.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }).then(res => {
-            this.form = res.data
+            this.form = res.data.data
         }).catch(err => {
             Notification.notify('error', err.response.data.message)
         })
     },
     methods:{
-        pay(){
+        update(){
             let token = this.checkLogin()
             this.errors = []
-            axios.post(`/salaries/pay/${this.id}`,this.form, {
+            axios.post(`/salaries/update/${this.id}`,this.form, {
                 headers:{
                     Authorization: `Bearer ${token}`
                 }

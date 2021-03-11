@@ -4288,6 +4288,161 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Salary/EditEmployeeSalary.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Salary/EditEmployeeSalary.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _mixins_helper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../mixins/helper */ "./resources/js/mixins/helper.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "PayEmployee",
+  mixins: [_mixins_helper__WEBPACK_IMPORTED_MODULE_0__["default"]],
+  data: function data() {
+    return {
+      id: this.$route.params.id,
+      form: {
+        name: '',
+        email: '',
+        salary_month: '',
+        salary: ''
+      }
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    var token = this.checkLogin();
+    axios.get("/salaries/edit-salary/".concat(this.id), {
+      headers: {
+        Authorization: "Bearer ".concat(token)
+      }
+    }).then(function (res) {
+      _this.form = res.data.data;
+    })["catch"](function (err) {
+      Notification.notify('error', err.response.data.message);
+    });
+  },
+  methods: {
+    update: function update() {
+      var _this2 = this;
+
+      var token = this.checkLogin();
+      this.errors = [];
+      axios.post("/salaries/update/".concat(this.id), this.form, {
+        headers: {
+          Authorization: "Bearer ".concat(token)
+        }
+      }).then(function (res) {
+        Notification.notify('success');
+      })["catch"](function (err) {
+        if (err.response.data.errors) {
+          _this2.errors = err.response.data.errors;
+        } else {
+          Notification.notify('error', err.response.data.message);
+        }
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Salary/ListEmployee.vue?vue&type=script&lang=js&":
 /*!******************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Salary/ListEmployee.vue?vue&type=script&lang=js& ***!
@@ -4397,6 +4552,225 @@ __webpack_require__.r(__webpack_exports__);
 
       return this.employees.filter(function (e) {
         return e.name.match(_this2.search) || e.email.match(_this2.search) || e.address.match(_this2.search);
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Salary/ListSalary.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Salary/ListSalary.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../helpers/AppStorage */ "./resources/js/helpers/AppStorage.js");
+/* harmony import */ var _mixins_helper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixins/helper */ "./resources/js/mixins/helper.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "ListSalary",
+  mixins: [_mixins_helper__WEBPACK_IMPORTED_MODULE_1__["default"]],
+  data: function data() {
+    return {
+      salaries: [],
+      search: ''
+    };
+  },
+  methods: {
+    fetch: function fetch() {
+      var _this = this;
+
+      var token = this.checkLogin();
+      axios.get("/salaries", {
+        headers: {
+          Authorization: "Bearer ".concat(token)
+        }
+      }).then(function (res) {
+        _this.salaries = res.data.data;
+      })["catch"](function (err) {
+        Notification.notify('error', err.response.data.message);
+      });
+    }
+  },
+  created: function created() {
+    this.fetch();
+  },
+  computed: {
+    filterSearch: function filterSearch() {
+      var _this2 = this;
+
+      return this.salaries.filter(function (e) {
+        return e.salary_month.match(_this2.search);
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Salary/ListSalaryMonth.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Salary/ListSalaryMonth.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _helpers_AppStorage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../helpers/AppStorage */ "./resources/js/helpers/AppStorage.js");
+/* harmony import */ var _mixins_helper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixins/helper */ "./resources/js/mixins/helper.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "ListSalary",
+  mixins: [_mixins_helper__WEBPACK_IMPORTED_MODULE_1__["default"]],
+  data: function data() {
+    return {
+      salaries: [],
+      search: '',
+      month: this.$route.params.month
+    };
+  },
+  methods: {
+    fetch: function fetch() {
+      var _this = this;
+
+      var token = this.checkLogin();
+      axios.get("/salaries/by-month/".concat(this.month), {
+        headers: {
+          Authorization: "Bearer ".concat(token)
+        }
+      }).then(function (res) {
+        _this.salaries = res.data.data;
+      })["catch"](function (err) {
+        Notification.notify('error', err.response.data.message);
+      });
+    }
+  },
+  created: function created() {
+    this.fetch();
+  },
+  computed: {
+    filterSearch: function filterSearch() {
+      var _this2 = this;
+
+      return this.salaries.filter(function (e) {
+        return e.salary_month.match(_this2.search);
       });
     }
   }
@@ -4524,7 +4898,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     var token = this.checkLogin();
-    axios.get("/employees/".concat(this.id), {
+    axios.get("/salaries/".concat(this.id), {
       headers: {
         Authorization: "Bearer ".concat(token)
       }
@@ -4540,7 +4914,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var token = this.checkLogin();
       this.errors = [];
-      axios.put("/employees/".concat(this.id), this.form, {
+      axios.post("/salaries/pay/".concat(this.id), this.form, {
         headers: {
           Authorization: "Bearer ".concat(token)
         }
@@ -35156,6 +35530,340 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Salary/EditEmployeeSalary.vue?vue&type=template&id=c8c6b828&scoped=true&":
+/*!****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Salary/EditEmployeeSalary.vue?vue&type=template&id=c8c6b828&scoped=true& ***!
+  \****************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "row" }, [
+      _c(
+        "div",
+        { staticClass: "col-12" },
+        [
+          _c(
+            "router-link",
+            {
+              staticClass: "btn btn-primary m-2",
+              attrs: { to: { name: "salaries.employee.index" } }
+            },
+            [_vm._v("List employee salary")]
+          )
+        ],
+        1
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-6 col-11" }, [
+        _c("div", { staticClass: "card shadow-sm my-5" }, [
+          _c("div", { staticClass: "card-body p-0" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-lg-12" }, [
+                _c("div", { staticClass: "login-form" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c("form", { attrs: { enctype: "multipart/form-data" } }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("div", { staticClass: "form-row" }, [
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.name,
+                                expression: "form.name"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            class: { "is-invalid": _vm.errors.name },
+                            attrs: { type: "text", placeholder: "Enter Name" },
+                            domProps: { value: _vm.form.name },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(_vm.form, "name", $event.target.value)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.name
+                            ? _c("div", { staticClass: "invalid-feedback" }, [
+                                _vm._v(
+                                  "\n                                                    " +
+                                    _vm._s(_vm.errors.name[0]) +
+                                    "\n                                                "
+                                )
+                              ])
+                            : _vm._e()
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.email,
+                                expression: "form.email"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            class: { "is-invalid": _vm.errors.email },
+                            attrs: {
+                              type: "email",
+                              "aria-describedby": "emailHelp",
+                              placeholder: "Enter Email Address"
+                            },
+                            domProps: { value: _vm.form.email },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(_vm.form, "email", $event.target.value)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.email
+                            ? _c("div", { staticClass: "invalid-feedback" }, [
+                                _vm._v(
+                                  "\n                                                    " +
+                                    _vm._s(_vm.errors.email[0]) +
+                                    "\n                                                "
+                                )
+                              ])
+                            : _vm._e()
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("div", { staticClass: "form-row" }, [
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c("label", { attrs: { for: "" } }, [
+                            _vm._v("Select month")
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.salary_month,
+                                  expression: "form.salary_month"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              class: { "is-invalid": _vm.errors.salary_month },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.form,
+                                    "salary_month",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _c(
+                                "option",
+                                {
+                                  attrs: {
+                                    selected: "",
+                                    value: "-1",
+                                    disabled: ""
+                                  }
+                                },
+                                [_vm._v("--Please select--")]
+                              ),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "Jan" } }, [
+                                _vm._v("Jan")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "Feb" } }, [
+                                _vm._v("Feb")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "Mar" } }, [
+                                _vm._v("Mar")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "Apr" } }, [
+                                _vm._v("Apr")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "May" } }, [
+                                _vm._v("May")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "Jun" } }, [
+                                _vm._v("Jun")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "Jul" } }, [
+                                _vm._v("Jul")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "Aug" } }, [
+                                _vm._v("Aug")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "Sep" } }, [
+                                _vm._v("Sep")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "Oct" } }, [
+                                _vm._v("Oct")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "Nov" } }, [
+                                _vm._v("Nov")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "Dev" } }, [
+                                _vm._v("Dev")
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _vm.errors.salary_month
+                            ? _c("div", { staticClass: "invalid-feedback" }, [
+                                _vm._v(
+                                  "\n                                                    " +
+                                    _vm._s(_vm.errors.salary_month[0]) +
+                                    "\n                                                "
+                                )
+                              ])
+                            : _vm._e()
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-6" }, [
+                          _c("label", { attrs: { for: "" } }, [
+                            _vm._v("Salary")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.salary,
+                                expression: "form.salary"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            class: { "is-invalid": _vm.errors.salary },
+                            attrs: {
+                              type: "number",
+                              "aria-describedby": "emailHelp",
+                              placeholder: "Enter salary"
+                            },
+                            domProps: { value: _vm.form.salary },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.form,
+                                  "salary",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.errors.salary
+                            ? _c("div", { staticClass: "invalid-feedback" }, [
+                                _vm._v(
+                                  "\n                                                    " +
+                                    _vm._s(_vm.errors.salary[0]) +
+                                    "\n                                                "
+                                )
+                              ])
+                            : _vm._e()
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary btn-block",
+                          attrs: { type: "submit" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.update($event)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "Update\n                                        "
+                          )
+                        ]
+                      )
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-center" }, [
+      _c("h1", { staticClass: "h4 text-gray-900 mb-4" }, [
+        _vm._v("Edit salary")
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Salary/ListEmployee.vue?vue&type=template&id=054d0f16&scoped=true&":
 /*!**********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Salary/ListEmployee.vue?vue&type=template&id=054d0f16&scoped=true& ***!
@@ -35236,7 +35944,7 @@ var render = function() {
                       _c("td", [
                         _c("img", {
                           staticStyle: { width: "100%" },
-                          attrs: { src: "storage/" + e.image, alt: "" }
+                          attrs: { src: "/storage/" + e.image, alt: "" }
                         })
                       ]),
                       _vm._v(" "),
@@ -35358,6 +36066,372 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Salary/ListSalary.vue?vue&type=template&id=6feaf832&scoped=true&":
+/*!********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Salary/ListSalary.vue?vue&type=template&id=6feaf832&scoped=true& ***!
+  \********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "row mb-2" }, [
+      _c("div", { staticClass: "col-md-4" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.search,
+              expression: "search"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "text", placeholder: "Input your search" },
+          domProps: { value: _vm.search },
+          on: {
+            change: _vm.search,
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.search = $event.target.value
+            }
+          }
+        })
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-lg-12 mb-4" }, [
+        _c("div", { staticClass: "card" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c("div", { staticClass: "table-responsive" }, [
+            _c(
+              "table",
+              { staticClass: "table align-items-center table-flush" },
+              [
+                _vm._m(2),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.filterSearch, function(e, index) {
+                    return _c("tr", { key: e.salary_month }, [
+                      _c("td", [
+                        _c("a", { attrs: { href: "#" } }, [
+                          _vm._v(_vm._s((index += 1)))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(e.salary_month))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "div",
+                          { staticClass: "btn-group" },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "btn btn-primary",
+                                attrs: {
+                                  to: {
+                                    name: "salaries.detail",
+                                    params: { month: e.salary_month }
+                                  }
+                                }
+                              },
+                              [_vm._v("View")]
+                            )
+                          ],
+                          1
+                        )
+                      ])
+                    ])
+                  }),
+                  0
+                )
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-footer" })
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "d-sm-flex align-items-center justify-content-between mb-4"
+      },
+      [
+        _c("h1", { staticClass: "h3 mb-0 text-gray-800" }, [
+          _vm._v("List Salary")
+        ]),
+        _vm._v(" "),
+        _c("ol", { staticClass: "breadcrumb" }, [
+          _c("li", { staticClass: "breadcrumb-item" }, [
+            _c("a", { attrs: { href: "./" } }, [_vm._v("Home")])
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Tables")]),
+          _vm._v(" "),
+          _c(
+            "li",
+            {
+              staticClass: "breadcrumb-item active",
+              attrs: { "aria-current": "page" }
+            },
+            [_vm._v("Simple Tables")]
+          )
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "card-header py-3 d-flex flex-row align-items-center justify-content-between"
+      },
+      [
+        _c("h6", { staticClass: "m-0 font-weight-bold text-primary" }, [
+          _vm._v("Simple Tables")
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "thead-light" }, [
+      _c("tr", [
+        _c("th", [_vm._v("STT")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Salary Month")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Action")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Salary/ListSalaryMonth.vue?vue&type=template&id=43c0df9e&scoped=true&":
+/*!*************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Salary/ListSalaryMonth.vue?vue&type=template&id=43c0df9e&scoped=true& ***!
+  \*************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "row mb-2" }, [
+      _c("div", { staticClass: "col-md-4" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.search,
+              expression: "search"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "text", placeholder: "Input your search" },
+          domProps: { value: _vm.search },
+          on: {
+            change: _vm.search,
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.search = $event.target.value
+            }
+          }
+        })
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-lg-12 mb-4" }, [
+        _c("div", { staticClass: "card" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c("div", { staticClass: "table-responsive" }, [
+            _c(
+              "table",
+              { staticClass: "table align-items-center table-flush" },
+              [
+                _vm._m(2),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.filterSearch, function(e, index) {
+                    return _c("tr", { key: e.salary_month }, [
+                      _c("td", [
+                        _c("a", { attrs: { href: "#" } }, [
+                          _vm._v(_vm._s((index += 1)))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(e.name))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(e.salary_month))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(e.amount))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(e.salary_date))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "div",
+                          { staticClass: "btn-group" },
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "btn btn-primary",
+                                attrs: {
+                                  to: {
+                                    name: "salaries.edit",
+                                    params: { id: e.id }
+                                  }
+                                }
+                              },
+                              [_vm._v("Edit")]
+                            )
+                          ],
+                          1
+                        )
+                      ])
+                    ])
+                  }),
+                  0
+                )
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-footer" })
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "d-sm-flex align-items-center justify-content-between mb-4"
+      },
+      [
+        _c("h1", { staticClass: "h3 mb-0 text-gray-800" }, [
+          _vm._v("List Salary Month")
+        ]),
+        _vm._v(" "),
+        _c("ol", { staticClass: "breadcrumb" }, [
+          _c("li", { staticClass: "breadcrumb-item" }, [
+            _c("a", { attrs: { href: "./" } }, [_vm._v("Home")])
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Tables")]),
+          _vm._v(" "),
+          _c(
+            "li",
+            {
+              staticClass: "breadcrumb-item active",
+              attrs: { "aria-current": "page" }
+            },
+            [_vm._v("Simple Tables")]
+          )
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "card-header py-3 d-flex flex-row align-items-center justify-content-between"
+      },
+      [
+        _c("h6", { staticClass: "m-0 font-weight-bold text-primary" }, [
+          _vm._v("Simple Tables")
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "thead-light" }, [
+      _c("tr", [
+        _c("th", [_vm._v("STT")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Month")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Amount")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Date")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Action")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Salary/PayEmployee.vue?vue&type=template&id=f75d0888&scoped=true&":
 /*!*********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Salary/PayEmployee.vue?vue&type=template&id=f75d0888&scoped=true& ***!
@@ -35383,9 +36457,9 @@ var render = function() {
             "router-link",
             {
               staticClass: "btn btn-primary m-2",
-              attrs: { to: { name: "employees.index" } }
+              attrs: { to: { name: "salaries.employee.index" } }
             },
-            [_vm._v("List employee")]
+            [_vm._v("List employee salary")]
           )
         ],
         1
@@ -35680,9 +36754,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "text-center" }, [
-      _c("h1", { staticClass: "h4 text-gray-900 mb-4" }, [
-        _vm._v("Edit employee")
-      ])
+      _c("h1", { staticClass: "h4 text-gray-900 mb-4" }, [_vm._v("Pay salary")])
     ])
   }
 ]
@@ -53632,6 +54704,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Salary/EditEmployeeSalary.vue":
+/*!***************************************************************!*\
+  !*** ./resources/js/components/Salary/EditEmployeeSalary.vue ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _EditEmployeeSalary_vue_vue_type_template_id_c8c6b828_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EditEmployeeSalary.vue?vue&type=template&id=c8c6b828&scoped=true& */ "./resources/js/components/Salary/EditEmployeeSalary.vue?vue&type=template&id=c8c6b828&scoped=true&");
+/* harmony import */ var _EditEmployeeSalary_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EditEmployeeSalary.vue?vue&type=script&lang=js& */ "./resources/js/components/Salary/EditEmployeeSalary.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _EditEmployeeSalary_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _EditEmployeeSalary_vue_vue_type_template_id_c8c6b828_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _EditEmployeeSalary_vue_vue_type_template_id_c8c6b828_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "c8c6b828",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Salary/EditEmployeeSalary.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Salary/EditEmployeeSalary.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/Salary/EditEmployeeSalary.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EditEmployeeSalary_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./EditEmployeeSalary.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Salary/EditEmployeeSalary.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EditEmployeeSalary_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Salary/EditEmployeeSalary.vue?vue&type=template&id=c8c6b828&scoped=true&":
+/*!**********************************************************************************************************!*\
+  !*** ./resources/js/components/Salary/EditEmployeeSalary.vue?vue&type=template&id=c8c6b828&scoped=true& ***!
+  \**********************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditEmployeeSalary_vue_vue_type_template_id_c8c6b828_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./EditEmployeeSalary.vue?vue&type=template&id=c8c6b828&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Salary/EditEmployeeSalary.vue?vue&type=template&id=c8c6b828&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditEmployeeSalary_vue_vue_type_template_id_c8c6b828_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditEmployeeSalary_vue_vue_type_template_id_c8c6b828_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Salary/ListEmployee.vue":
 /*!*********************************************************!*\
   !*** ./resources/js/components/Salary/ListEmployee.vue ***!
@@ -53696,6 +54837,144 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListEmployee_vue_vue_type_template_id_054d0f16_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListEmployee_vue_vue_type_template_id_054d0f16_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Salary/ListSalary.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/Salary/ListSalary.vue ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ListSalary_vue_vue_type_template_id_6feaf832_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ListSalary.vue?vue&type=template&id=6feaf832&scoped=true& */ "./resources/js/components/Salary/ListSalary.vue?vue&type=template&id=6feaf832&scoped=true&");
+/* harmony import */ var _ListSalary_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ListSalary.vue?vue&type=script&lang=js& */ "./resources/js/components/Salary/ListSalary.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ListSalary_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ListSalary_vue_vue_type_template_id_6feaf832_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ListSalary_vue_vue_type_template_id_6feaf832_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "6feaf832",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Salary/ListSalary.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Salary/ListSalary.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/Salary/ListSalary.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListSalary_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ListSalary.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Salary/ListSalary.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListSalary_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Salary/ListSalary.vue?vue&type=template&id=6feaf832&scoped=true&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/js/components/Salary/ListSalary.vue?vue&type=template&id=6feaf832&scoped=true& ***!
+  \**************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListSalary_vue_vue_type_template_id_6feaf832_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ListSalary.vue?vue&type=template&id=6feaf832&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Salary/ListSalary.vue?vue&type=template&id=6feaf832&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListSalary_vue_vue_type_template_id_6feaf832_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListSalary_vue_vue_type_template_id_6feaf832_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Salary/ListSalaryMonth.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/components/Salary/ListSalaryMonth.vue ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ListSalaryMonth_vue_vue_type_template_id_43c0df9e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ListSalaryMonth.vue?vue&type=template&id=43c0df9e&scoped=true& */ "./resources/js/components/Salary/ListSalaryMonth.vue?vue&type=template&id=43c0df9e&scoped=true&");
+/* harmony import */ var _ListSalaryMonth_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ListSalaryMonth.vue?vue&type=script&lang=js& */ "./resources/js/components/Salary/ListSalaryMonth.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ListSalaryMonth_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ListSalaryMonth_vue_vue_type_template_id_43c0df9e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ListSalaryMonth_vue_vue_type_template_id_43c0df9e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "43c0df9e",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Salary/ListSalaryMonth.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Salary/ListSalaryMonth.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/Salary/ListSalaryMonth.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListSalaryMonth_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ListSalaryMonth.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Salary/ListSalaryMonth.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListSalaryMonth_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Salary/ListSalaryMonth.vue?vue&type=template&id=43c0df9e&scoped=true&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/components/Salary/ListSalaryMonth.vue?vue&type=template&id=43c0df9e&scoped=true& ***!
+  \*******************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListSalaryMonth_vue_vue_type_template_id_43c0df9e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ListSalaryMonth.vue?vue&type=template&id=43c0df9e&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Salary/ListSalaryMonth.vue?vue&type=template&id=43c0df9e&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListSalaryMonth_vue_vue_type_template_id_43c0df9e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListSalaryMonth_vue_vue_type_template_id_43c0df9e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -54600,6 +55879,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Expense_EditExpense__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/Expense/EditExpense */ "./resources/js/components/Expense/EditExpense.vue");
 /* harmony import */ var _components_Salary_ListEmployee__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./components/Salary/ListEmployee */ "./resources/js/components/Salary/ListEmployee.vue");
 /* harmony import */ var _components_Salary_PayEmployee__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./components/Salary/PayEmployee */ "./resources/js/components/Salary/PayEmployee.vue");
+/* harmony import */ var _components_Salary_ListSalary__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./components/Salary/ListSalary */ "./resources/js/components/Salary/ListSalary.vue");
+/* harmony import */ var _components_Salary_ListSalaryMonth__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./components/Salary/ListSalaryMonth */ "./resources/js/components/Salary/ListSalaryMonth.vue");
+/* harmony import */ var _components_Salary_EditEmployeeSalary__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./components/Salary/EditEmployeeSalary */ "./resources/js/components/Salary/EditEmployeeSalary.vue");
+
+
+
 
 
 
@@ -54704,12 +55989,24 @@ var routes = [{
   name: 'expenses.edit'
 }, {
   path: '/salaries',
-  component: _components_Salary_ListEmployee__WEBPACK_IMPORTED_MODULE_20__["default"],
+  component: _components_Salary_ListSalary__WEBPACK_IMPORTED_MODULE_22__["default"],
   name: 'salaries.index'
+}, {
+  path: '/salaries/employees',
+  component: _components_Salary_ListEmployee__WEBPACK_IMPORTED_MODULE_20__["default"],
+  name: 'salaries.employee.index'
 }, {
   path: '/salaries/:id/pay',
   component: _components_Salary_PayEmployee__WEBPACK_IMPORTED_MODULE_21__["default"],
   name: 'salaries.pay'
+}, {
+  path: '/salaries/:month',
+  component: _components_Salary_ListSalaryMonth__WEBPACK_IMPORTED_MODULE_23__["default"],
+  name: 'salaries.detail'
+}, {
+  path: '/salaries/edit/:id',
+  component: _components_Salary_EditEmployeeSalary__WEBPACK_IMPORTED_MODULE_24__["default"],
+  name: 'salaries.edit'
 } // {
 //     path: '/bar',
 //     component: Bar
