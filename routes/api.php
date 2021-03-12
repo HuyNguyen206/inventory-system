@@ -44,4 +44,7 @@ Route::middleware('jwt')->namespace('API')->group(function () {
     Route::get('salaries/by-month/{month}', 'SalaryController@viewSalaryByMonth');
     Route::get('salaries/edit-salary/{salary}', 'SalaryController@getSalaryById');
     Route::post('salaries/update/{salary}', 'SalaryController@updateSalaryById');
+    Route::get('pos', 'POSController@getAllProduct');
+    Route::get('pos/get-all-category', 'POSController@getAllCategory');
+    Route::get('pos/product-of-category/{category}', 'POSController@getProductByCategoryId');
 });
