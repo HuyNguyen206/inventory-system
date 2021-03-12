@@ -71,6 +71,9 @@ export default {
     methods: {
         deleteExpense(id) {
             let token = this.checkLogin();
+            if(!token){
+                return
+            }
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -104,6 +107,9 @@ export default {
         },
         fetch() {
             let token = this.checkLogin();
+            if(!token){
+                return
+            }
             axios.get(`/expenses`, {headers: {Authorization: `Bearer ${token}`}})
                 .then(res => {
                     this.expenses = res.data.data

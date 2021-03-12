@@ -171,6 +171,9 @@ export default {
         },
         create() {
             let token = this.checkLogin();
+            if(!token){
+                return
+            }
                 this.errors = [];
                 axios.post(`/employees`, this.form, {
                     headers: {Authorization: `Bearer ${token}`}

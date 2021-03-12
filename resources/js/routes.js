@@ -23,6 +23,10 @@ import PayEmployee from "./components/Salary/PayEmployee";
 import ListSalary from "./components/Salary/ListSalary";
 import ListSalaryMonth from "./components/Salary/ListSalaryMonth";
 import EditEmployeeSalary from "./components/Salary/EditEmployeeSalary";
+import AddCustomer from "./components/Customer/AddCustomer";
+import ListCustomer from "./components/Customer/ListCustomer";
+import EditCustomer from "./components/Customer/EditCustomer";
+import POS from "./components/POS";
 const routes = [
     {
         path: '/',
@@ -148,6 +152,26 @@ const routes = [
         path: '/salaries/edit/:id',
         component: EditEmployeeSalary,
         name: 'salaries.edit'
+    },
+    {
+        path: '/customers/create',
+        component: AddCustomer,
+        name: 'customers.create'
+    },
+    {
+        path: '/customers',
+        component: ListCustomer,
+        name: 'customers.index'
+    },
+    {
+        path: '/customers/:id/edit',
+        component: EditCustomer,
+        name: 'customers.edit'
+    },
+    {
+        path: '/pos',
+        component: POS,
+        name: 'pos'
     },
 
     // {

@@ -75,6 +75,9 @@ export default {
     },
     created() {
         let token = this.checkLogin()
+        if(!token){
+            return
+        }
         axios.get(`/expenses/${this.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -88,6 +91,9 @@ export default {
     methods:{
         update(){
             let token = this.checkLogin()
+            if(!token){
+                return
+            }
             this.errors = []
             axios.put(`/expenses/${this.id}`,this.form, {
                 headers:{

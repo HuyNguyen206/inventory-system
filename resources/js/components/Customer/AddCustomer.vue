@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <div class="col-12">
-                <router-link class="btn btn-primary m-2" :to="{ name: 'suppliers.index'}">List supplier</router-link>
+                <router-link class="btn btn-primary m-2" :to="{ name: 'customers.index'}">List customer</router-link>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -13,7 +13,7 @@
                             <div class="col-lg-12">
                                 <div class="login-form">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Add supplier</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Add customer</h1>
                                     </div>
                                     <form enctype="multipart/form-data">
                                         <div class="form-group">
@@ -63,20 +63,6 @@
                                         <div class="form-group">
                                             <div class="form-row">
                                                 <div class="col-md-6">
-                                                    <input v-model='form.shop_name'
-                                                           :class="{ 'is-invalid': errors.shop_name}" type="text"
-                                                           class="form-control"
-                                                           placeholder="Enter shop name">
-                                                    <div class="invalid-feedback" v-if="errors.shop_name">
-                                                        {{ errors.shop_name[0] }}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="form-row">
-                                                <div class="col-md-6">
                                                     <div class="custom-file">
                                                         <input type="file" class="custom-file-input" id="customFile"
                                                                @change="onSeletedImage">
@@ -114,7 +100,7 @@ export default {
     created() {
         this.checkLogin()
     },
-    name: "AddSupplier",
+    name: "AddCustomer",
     data() {
         return {
             form: {
@@ -123,7 +109,6 @@ export default {
                 address: '',
                 phone: '',
                 image: '',
-                shop_name:''
             }
         }
     },
@@ -149,12 +134,12 @@ export default {
                 return
             }
                 this.errors = [];
-                axios.post(`/suppliers`, this.form, {
+                axios.post(`/customers`, this.form, {
                     headers: {Authorization: `Bearer ${token}`}
                 })
                     .then(res => {
                         Notification.notify('success')
-                        this.$router.push({name: 'suppliers.index'})
+                        this.$router.push({name: 'customers.index'})
                     })
                     .catch(err => {
                         if(err.response.data.errors){

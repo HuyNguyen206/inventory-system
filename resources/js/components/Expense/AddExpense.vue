@@ -80,6 +80,9 @@ export default {
     methods: {
         create() {
             let token = this.checkLogin();
+            if(!token){
+                return
+            }
                 this.errors = [];
                 axios.post(`/expenses`, this.form, {
                     headers: {Authorization: `Bearer ${token}`}

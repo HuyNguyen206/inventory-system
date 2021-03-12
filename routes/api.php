@@ -37,6 +37,7 @@ Route::middleware('jwt')->namespace('API')->group(function () {
         'categories' => 'CategoryController',
         'products' => 'ProductController',
         'expenses' => 'ExpenseController',
+        'customers' => 'CustomerController',
     ]);
     Route::apiResource('salaries', 'SalaryController')->only(['show', 'index']);
     Route::post('salaries/pay/{id}', 'SalaryController@paySalary');

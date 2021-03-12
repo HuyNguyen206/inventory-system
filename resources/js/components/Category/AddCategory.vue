@@ -64,6 +64,9 @@ export default {
     methods: {
         create() {
             let token = this.checkLogin();
+            if(!token){
+                return
+            }
                 this.errors = [];
                 axios.post(`/categories`, this.form, {
                     headers: {Authorization: `Bearer ${token}`}

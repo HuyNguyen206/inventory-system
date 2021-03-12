@@ -73,6 +73,9 @@ export default {
     methods: {
         fetch() {
             let token = this.checkLogin();
+            if(!token){
+                return
+            }
             axios.get(`/salaries/by-month/${this.month}`, {headers: {Authorization: `Bearer ${token}`}})
                 .then(res => {
                     this.salaries = res.data.data

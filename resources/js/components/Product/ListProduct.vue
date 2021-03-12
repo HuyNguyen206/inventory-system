@@ -34,6 +34,8 @@
                                 <th>Supplier</th>
                                 <th>Category</th>
                                 <th>Buying date</th>
+                                <th>Quantity product</th>
+                                <th>Status</th>
                                 <th>Image</th>
                                 <th>Action</th>
                             </tr>
@@ -49,6 +51,11 @@
                                 <td>{{ product.supplier.name }}</td>
                                 <td>{{ product.category.name }}</td>
                                 <td>{{ product.buying_date }}</td>
+                                <td>{{ product.product_quantity }}</td>
+                                <td>
+                                    <span class="badge badge-success" v-if="product.product_quantity > 0">Available</span>
+                                    <span class="badge badge-danger" v-else> Out of stock</span>
+                                </td>
                                 <td><img style="width: 100%;" :src="`storage/${product.image}`" alt=""></td>
                                 <td>
                                     <div class="btn-group">
@@ -83,6 +90,9 @@ export default {
     methods: {
         deleteProduct(id) {
             let token = this.checkLogin();
+            if(!token){
+                return
+            }
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -116,6 +126,9 @@ export default {
         },
         fetch() {
             let token = this.checkLogin();
+            if(!token){
+                return
+            }
             axios.get(`/products`, {headers: {Authorization: `Bearer ${token}`}})
                 .then(res => {
                     this.products = res.data.data

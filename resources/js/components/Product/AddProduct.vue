@@ -160,6 +160,9 @@ export default {
     mixins: [helper],
     created() {
        let token = this.checkLogin()
+        if(!token){
+            return
+        }
         axios.get(`/categories`, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -218,6 +221,9 @@ export default {
         },
         create() {
             let token = this.checkLogin();
+            if(!token){
+                return
+            }
                 this.errors = [];
                 axios.post(`/products`, this.form, {
                     headers: {Authorization: `Bearer ${token}`}

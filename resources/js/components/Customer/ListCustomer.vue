@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">List Employee</h1>
+            <h1 class="h3 mb-0 text-gray-800">Customers</h1>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="./">Home</a></li>
                 <li class="breadcrumb-item">Tables</li>
@@ -27,26 +27,25 @@
                             <tr>
                                 <th>STT</th>
                                 <th>Name</th>
+                                <th>Email</th>
                                 <th>Address</th>
-                                <th>Salary</th>
-                                <th>Joining Date</th>
                                 <th>Phone</th>
                                 <th>Image</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="(e, index) in filterSearch" :key="e.id">
+                            <tr v-for="(customer, index) in filterSearch" :key="customer.id">
                                 <td><a href="#">{{ index += 1 }}</a></td>
-                                <td>{{ e.name }}</td>
-                                <td>{{ e.address }}</td>
-                                <td>{{ e.salary }}</td>
-                                <td>{{ e.joining_date }}</td>
-                                <td>{{ e.phone }}</td>
-                                <td><img style="width: 100%;" :src="`/storage/${e.image}`" alt=""></td>
+                                <td>{{ customer.name }}</td>
+                                <td>{{ customer.email }}</td>
+                                <td>{{ customer.address }}</td>
+                                <td>{{ customer.phone }}</td>
+                                <td><img style="width: 100%;" :src="`/storage/${customer.image}`" alt=""></td>
                                 <td>
                                     <div class="btn-group">
-                                        <router-link :to="{name: 'salaries.pay', params: {id: e.id}}" class="btn btn-primary">Pay salary</router-link>
+                                        <router-link :to="{name: 'customers.edit', params: {id: customer.id}}" class="btn btn-primary">Edit</router-link>
+                                        <a @click.prevent="deleteSupplier(customer.id)" class="btn btn-danger text-white">Delete</a>
                                     </div>
                                 </td>
                             </tr>
@@ -65,23 +64,59 @@ import AppStorage from "../../helpers/AppStorage";
 import helper from "../../mixins/helper";
 
 export default {
-    name: "ListEmployee",
+    name: "ListCustomer",
     mixins: [helper],
     data() {
         return {
-            employees: [],
+            customers: [],
             search: ''
         }
     },
     methods: {
+        deleteSupplier(id) {
+            let token = this.checkLogin();
+            if(!token){
+                return
+            }
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.delete(`/customers/${id}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }).then(res => {
+                        Swal.fire(
+                            'Deleted!',
+                            'This customer has been deleted.',
+                            'success'
+                        )
+                        this.customers = this.customers.filter(customer => {
+                            return customer.id !== id
+                        })
+                    })
+                        .catch(err => {
+                            Notification.notify('error', err.response.data.message)
+                        })
+
+                }
+            })
+        },
         fetch() {
             let token = this.checkLogin();
             if(!token){
                 return
             }
-            axios.get(`/employees`, {headers: {Authorization: `Bearer ${token}`}})
+            axios.get(`/customers`, {headers: {Authorization: `Bearer ${token}`}})
                 .then(res => {
-                    this.employees = res.data.data
+                    this.customers = res.data.data
                 })
                 .catch(err => {
                     Notification.notify('error', err.response.data.message)
@@ -94,8 +129,8 @@ export default {
     },
     computed: {
         filterSearch() {
-            return this.employees.filter(e => {
-                return e.name.match(this.search) || e.email.match(this.search) || e.address.match(this.search)
+            return this.customers.filter(customer => {
+                return customer.name.match(this.search) || customer.email.match(this.search) || customer.address.match(this.search)
             })
         }
     }

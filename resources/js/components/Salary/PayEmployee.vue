@@ -108,6 +108,9 @@ export default {
     },
     created() {
         let token = this.checkLogin()
+        if(!token){
+            return
+        }
         axios.get(`/salaries/${this.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -121,6 +124,9 @@ export default {
     methods:{
         pay(){
             let token = this.checkLogin()
+            if(!token){
+                return
+            }
             this.errors = []
             axios.post(`/salaries/pay/${this.id}`,this.form, {
                 headers:{

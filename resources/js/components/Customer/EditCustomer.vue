@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <div class="col-12">
-                <router-link class="btn btn-primary m-2" :to="{ name: 'suppliers.index'}">List supplier</router-link>
+                <router-link class="btn btn-primary m-2" :to="{ name: 'customers.index'}">List customer</router-link>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -13,7 +13,7 @@
                             <div class="col-lg-12">
                                 <div class="login-form">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Add supplier</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Edit customer</h1>
                                     </div>
                                     <form enctype="multipart/form-data">
                                         <div class="form-group">
@@ -51,24 +51,10 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <input v-model='form.phone' :class="{ 'is-invalid': errors.phone}"
-                                                           type="tel" class="form-control" id="exampleInputFirstName"
+                                                           type="tel" class="form-control"
                                                            placeholder="Enter phone">
                                                     <div class="invalid-feedback" v-if="errors.phone">
                                                         {{ errors.phone[0] }}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="form-row">
-                                                <div class="col-md-6">
-                                                    <input v-model='form.shop_name'
-                                                           :class="{ 'is-invalid': errors.shop_name}" type="text"
-                                                           class="form-control"
-                                                           placeholder="Enter shop name">
-                                                    <div class="invalid-feedback" v-if="errors.shop_name">
-                                                        {{ errors.shop_name[0] }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -85,13 +71,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <img :src="form.image" alt="" style="width: 200px">
+                                                    <img :src="`${originImage}`" alt="" style="width: 200px">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-block"
-                                                    @click.prevent="create">Create
+                                            <button type="submit" class="btn btn-primary btn-block" @click.prevent="update">Update
                                             </button>
                                         </div>
                                     </form>
@@ -103,31 +88,45 @@
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
 import helper from "../../mixins/helper";
 
 export default {
+    name: "EditCustomer",
     mixins: [helper],
-    created() {
-        this.checkLogin()
-    },
-    name: "AddSupplier",
     data() {
         return {
+            id: this.$route.params.id,
             form: {
                 name: '',
                 email: '',
                 address: '',
                 phone: '',
                 image: '',
-                shop_name:''
-            }
+            },
+            originImage: ''
         }
     },
-    methods: {
+    created() {
+        let token = this.checkLogin()
+        if(!token){
+            return
+        }
+        axios.get(`/customers/${this.id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then(res => {
+            this.form = res.data
+            this.originImage =`/storage/${this.form.image}`
+            this.form.image = ''
+        }).catch(err => {
+            Notification.notify('error', err.response.data.message)
+        })
+    },
+    methods:{
         onSeletedImage(event) {
             console.log(event)
             let file = event.target.files[0];
@@ -139,33 +138,34 @@ export default {
                     console.log(event)
                     console.log(event.target.result)
                     this.form.image = event.target.result
+                    this.originImage = event.target.result
                 }
                 fileReader.readAsDataURL(file)
             }
         },
-        create() {
-            let token = this.checkLogin();
+        update(){
+            let token = this.checkLogin()
             if(!token){
                 return
             }
-                this.errors = [];
-                axios.post(`/suppliers`, this.form, {
-                    headers: {Authorization: `Bearer ${token}`}
-                })
-                    .then(res => {
-                        Notification.notify('success')
-                        this.$router.push({name: 'suppliers.index'})
-                    })
-                    .catch(err => {
-                        if(err.response.data.errors){
-                            this.errors = err.response.data.errors
-                        }
-                        else{
-                            Notification.notify('error', err.response.data.message)
-                        }
-                    })
+            this.errors = []
+            axios.put(`/customers/${this.id}`,this.form, {
+                headers:{
+                    Authorization: `Bearer ${token}`
+                }
+            }).then(res => {
+                Notification.notify('success')
+            }).catch(err => {
+                if(err.response.data.errors){
+                    this.errors = err.response.data.errors
+                }
+                else{
+                    Notification.notify('error', err.response.data.message)
+                }
+            })
         }
     }
+
 }
 </script>
 

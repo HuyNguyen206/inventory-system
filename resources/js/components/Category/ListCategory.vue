@@ -105,6 +105,9 @@ export default {
         },
         fetch() {
             let token = this.checkLogin();
+            if(!token){
+                return
+            }
             axios.get(`/categories`, {headers: {Authorization: `Bearer ${token}`}})
                 .then(res => {
                     this.categories = res.data.data

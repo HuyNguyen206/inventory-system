@@ -75,6 +75,9 @@ export default {
     methods: {
         deleteSupplier(id) {
             let token = this.checkLogin();
+            if(!token){
+                return
+            }
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -108,6 +111,9 @@ export default {
         },
         fetch() {
             let token = this.checkLogin();
+            if(!token){
+                return
+            }
             axios.get(`/suppliers`, {headers: {Authorization: `Bearer ${token}`}})
                 .then(res => {
                     this.suppliers = res.data.data

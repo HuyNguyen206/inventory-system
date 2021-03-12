@@ -11,6 +11,9 @@ export default {
     mixins: [helper],
     created() {
         let token = this.checkLogin();
+        if(!token){
+            return
+        }
             axios.post(`/auth/logout`, {}, {
                 headers: {Authorization: `Bearer ${token}`}
             })

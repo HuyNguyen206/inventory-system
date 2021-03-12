@@ -179,6 +179,9 @@ export default {
     },
     created() {
         let token = this.checkLogin()
+        if(!token){
+            return
+        }
         axios.get(`/products/${this.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -230,6 +233,9 @@ export default {
         },
         update(){
             let token = this.checkLogin()
+            if(!token){
+                return
+            }
             this.errors = []
             axios.put(`/products/${this.id}`,this.form, {
                 headers:{

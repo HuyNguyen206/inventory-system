@@ -59,6 +59,9 @@ export default {
     },
     created() {
         let token = this.checkLogin()
+        if(!token){
+            return
+        }
         axios.get(`/categories/${this.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
