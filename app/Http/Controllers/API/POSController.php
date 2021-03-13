@@ -8,6 +8,7 @@ use App\Http\Resources\PosProductResource;
 use App\Http\Resources\ProductResource;
 use App\Model\Category;
 use App\Model\Product;
+use App\Model\TempCart;
 use Illuminate\Http\Request;
 
 class POSController extends Controller
@@ -48,15 +49,55 @@ class POSController extends Controller
 
     public function addTocart(Product $product){
         try {
-            $data['user_id'] = \Auth::guard()->id();
-            $data['product_name'] = $product->product_name;
-            $data['product_quantity'] = 1;
-            $data['product_price'] = $product->selling_price;
-            $data['sub_total'] = $data['product_price'];
-            $cart = $product->cartProducts()->create($data);
-            return response()->success($cart);
+            $userId = \Auth::guard()->id();
+            $cartProducts = $product->cartProducts()->whereUserId($userId);
+            $count = $cartProducts->count();
+            if($count){
+                $cartProduct = $cartProducts->first();
+                $cartProduct->product_quantity += 1;
+                $cartProduct->sub_total = $cartProduct->product_quantity * $cartProduct->product_price;
+                $cartProduct->save();
+            }else{
+                $data['user_id'] = $userId;
+                $data['product_name'] = $product->product_name;
+                $data['product_quantity'] = 1;
+                $data['product_price'] = $product->selling_price;
+                $data['sub_total'] = $data['product_price'];
+                $cart = $product->cartProducts()->create($data);
+            }
+            return response()->success();
         }
         catch (\Throwable $ex){
+            return response()->error($ex->getMessage());
+        }
+    }
+
+    public function getCart(){
+        try {
+            $cartProducts = TempCart::all();
+            return response()->success($cartProducts);
+        }catch (\Throwable $ex){
+            return  response()->error($ex->getMessage());
+        }
+    }
+
+    public function removeProductFromCart(TempCart $cartProduct){
+        try {
+            $cartProduct->delete();
+            return response()->success();
+        }catch (\Throwable $ex){
+            return  response()->error($ex->getMessage());
+        }
+
+    }
+
+    public function updateCart(TempCart $cartProduct, Request $request){
+        try {
+            $cartProduct->product_quantity = $request->product_quantity;
+            $cartProduct->sub_total = $request->product_quantity * $cartProduct->product_price;
+            $cartProduct->save();
+            return response()->success();
+        }catch (\Throwable $ex){
             return response()->error($ex->getMessage());
         }
     }

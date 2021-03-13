@@ -30,45 +30,17 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td><a href="#">RA0449</a></td>
-                                    <td>Udin Wayang</td>
-                                    <td>Nasi Padang</td>
-                                    <td><span class="badge badge-success">Delivered</span></td>
-                                    <td>25</td>
-                                    <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
-                                </tr>
-                                <tr>
-                                    <td><a href="#">RA5324</a></td>
-                                    <td>Jaenab Bajigur</td>
-                                    <td>Gundam 90' Edition</td>
-                                    <td><span class="badge badge-warning">Shipping</span></td>
-                                    <td>25</td>
-                                    <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
-                                </tr>
-                                <tr>
-                                    <td><a href="#">RA8568</a></td>
-                                    <td>Rivat Mahesa</td>
-                                    <td>Oblong T-Shirt</td>
-                                    <td><span class="badge badge-danger">Pending</span></td>
-                                    <td>25</td>
-                                    <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
-                                </tr>
-                                <tr>
-                                    <td><a href="#">RA1453</a></td>
-                                    <td>Indri Junanda</td>
-                                    <td>Hat Rounded</td>
-                                    <td><span class="badge badge-info">Processing</span></td>
-                                    <td>25</td>
-                                    <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
-                                </tr>
-                                <tr>
-                                    <td><a href="#">RA1998</a></td>
-                                    <td>Udin Cilok</td>
-                                    <td>Baby Powder</td>
-                                    <td><span class="badge badge-success">Delivered</span></td>
-                                    <td>25</td>
-                                    <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
+                                <tr v-for="(cp, index) in cartProducts" :key="cp.id">
+                                    <td>{{index+=1}}</td>
+                                    <td>{{cp.product_name}}</td>
+                                    <td class="pro_quantity">
+                                        <input @change="updateCart(cp.id,cp.product_quantity )" min="1"  type="number" v-model="cp.product_quantity">
+                                        <button  @click="updateCart(cp.id, cp.product_quantity+=1)" class="btn btn-success btn-sm">+</button>
+                                        <button :disabled="cp.product_quantity == 1" @click="updateCart(cp.id, cp.product_quantity-=1)" class="btn btn-danger btn-sm">-</button>
+                                    </td>
+                                    <td>{{cp.product_price}}</td>
+                                    <td>{{cp.sub_total}}</td>
+                                    <td><a @click.prevent="removeCartProduct(cp.id)" class="btn btn-sm btn-primary" style="color:white">X</a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -255,6 +227,7 @@ export default {
             search: '',
             searchByCategory: '',
             customers: [],
+            cartProducts: [],
             form: {
                 name_id: '',
                 pay: '',
@@ -267,9 +240,37 @@ export default {
     created() {
         this.fetch();
         this.getAllCategory();
-        this.getCustomer()
+        this.getCustomer();
+        this.getCartProducts()
+        EventBus.$on('updateCart', this.getCartProducts)
     },
     methods: {
+        removeCartProduct(id){
+            let token = this.checkLogin();
+            if (!token) {
+                return
+            }
+            axios.get(`/pos/remove-cart-product/${id}`, {headers: {Authorization: `Bearer ${token}`}})
+                .then(res => {
+                    EventBus.$emit('updateCart')
+                })
+                .catch(err => {
+                    Notification.notify('error', err.response.data.message)
+                })
+        },
+        getCartProducts() {
+            let token = this.checkLogin();
+            if (!token) {
+                return
+            }
+            axios.get(`/pos/get-cart-products`, {headers: {Authorization: `Bearer ${token}`}})
+                .then(res => {
+                    this.cartProducts = res.data.data
+                })
+                .catch(err => {
+                    Notification.notify('error', err.response.data.message)
+                })
+        },
         addToCart(id){
             let token = this.checkLogin();
             if (!token) {
@@ -278,6 +279,7 @@ export default {
             axios.get(`/pos/add-to-cart/${id}`, {headers: {Authorization: `Bearer ${token}`}})
                 .then(res => {
                    Notification.notify('success', 'Add to cart successfully!')
+                    EventBus.$emit('updateCart')
                 })
                 .catch(err => {
                     Notification.notify('error', err.response.data.message)
@@ -347,6 +349,24 @@ export default {
             return this.products.filter(product => {
                 return product.product_name.match(this.searchByCategory) && product.category_id == id
             })
+        },
+        updateCart(cartProductId, product_quantity){
+            let token = this.checkLogin();
+            if (!token) {
+                return
+            }
+            axios.put(`/pos/update-cart/${cartProductId}`, {product_quantity},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+            .then(res => {
+                EventBus.$emit('updateCart')
+            })
+            .catch(err => {
+                Notification.notify('error', err.response.data.message)
+            })
         }
     },
     computed: {
@@ -359,6 +379,14 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.pro_quantity{
+    display: flex;
+    input{
+        width: 35px;
+    }
+    *{
+        margin-right: 5px;
+    }
+}
 </style>

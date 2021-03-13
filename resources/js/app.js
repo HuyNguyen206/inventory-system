@@ -25,6 +25,7 @@ const Toast = Swal.mixin({
 })
 window.Toast = Toast
 Vue.use(VueRouter)
+window.EventBus = new Vue()
 window.User = User
 import Notification from "./helpers/Notification";
 window.Notification = Notification
