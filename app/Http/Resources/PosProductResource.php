@@ -20,7 +20,8 @@ class PosProductResource extends JsonResource
             'product_name' => $this->product_name,
             'image' => $this->image,
             'created_at' => Carbon::make($this->created_at)->diffForHumans(),
-            'product_quantity' => $this->product_quantity
+            'product_quantity' => $this->product_quantity,
+            'category_id' => $this->category_id
         ];
     }
 }

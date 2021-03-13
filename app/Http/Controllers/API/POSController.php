@@ -44,6 +44,20 @@ class POSController extends Controller
         } catch (\Throwable $ex) {
             return response()->error($ex->getMessage());
         }
+    }
 
+    public function addTocart(Product $product){
+        try {
+            $data['user_id'] = \Auth::guard()->id();
+            $data['product_name'] = $product->product_name;
+            $data['product_quantity'] = 1;
+            $data['product_price'] = $product->selling_price;
+            $data['sub_total'] = $data['product_price'];
+            $cart = $product->cartProducts()->create($data);
+            return response()->success($cart);
+        }
+        catch (\Throwable $ex){
+            return response()->error($ex->getMessage());
+        }
     }
 }

@@ -47,4 +47,5 @@ Route::middleware('jwt')->namespace('API')->group(function () {
     Route::get('pos', 'POSController@getAllProduct');
     Route::get('pos/get-all-category', 'POSController@getAllCategory');
     Route::get('pos/product-of-category/{category}', 'POSController@getProductByCategoryId');
+    Route::get('pos/add-to-cart/{product}', 'POSController@addToCart');
 });

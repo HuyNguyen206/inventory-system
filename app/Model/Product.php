@@ -18,4 +18,8 @@ class Product extends Model
     {
         return $this->belongsTo(Supplier::class, 'supplier_id');
     }
+
+    public function cartProducts(){
+        return $this->hasMany(TempCart::class, 'product_id');
+    }
 }
