@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateOrderRequest;
 use App\Http\Resources\PosCategoryResource;
 use App\Http\Resources\PosProductResource;
 use App\Http\Resources\ProductResource;
 use App\Model\Category;
+use App\Model\Order;
 use App\Model\Product;
 use App\Model\TempCart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class POSController extends Controller
 {
@@ -98,6 +101,40 @@ class POSController extends Controller
             $cartProduct->save();
             return response()->success();
         }catch (\Throwable $ex){
+            return response()->error($ex->getMessage());
+        }
+    }
+
+    public function order(CreateOrderRequest $request){
+        try {
+            DB::beginTransaction();
+            $order = new Order();
+            $order->customer_id = $request->form['customer_id'];
+            $order->qty = $request->payment['totalQuantity'];
+            $order->sub_total = $request->payment['total'];
+            $order->vat = $request->payment['vat'];
+            $order->total = $request->payment['total'];
+            $order->pay = $request->form['pay'];
+            $order->due = $request->form['due'];
+            $order->pay_by = $request->form['pay_by'];
+            $order->order_date = date('Y-m-d');
+            $order->order_month = date('m');
+            $order->order_year = date('Y');
+            $order->save();
+            foreach ($request->cartProducts as $cartProduct){
+                $order->orderDetails()->create([
+                    'product_id' => $cartProduct['product_id'],
+                    'product_quantity' => $cartProduct['product_quantity'],
+                    'product_price' => $cartProduct['product_price'],
+                    'sub_total' => $cartProduct['sub_total'],
+                ]);
+                Product::find($cartProduct['product_id'])->decrement('product_quantity',$cartProduct['product_quantity']);
+            }
+            TempCart::whereUserId(\Auth::id())->delete();
+            DB::commit();
+            return response()->success();
+        }catch (\Throwable $ex){
+            DB::rollBack();
             return response()->error($ex->getMessage());
         }
     }

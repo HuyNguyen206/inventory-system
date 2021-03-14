@@ -34,9 +34,9 @@
                                     <td>{{index+=1}}</td>
                                     <td>{{cp.product_name}}</td>
                                     <td class="pro_quantity">
-                                        <input @change="updateCart(cp.id,cp.product_quantity )" min="1"  type="number" v-model="cp.product_quantity">
-                                        <button  @click="updateCart(cp.id, cp.product_quantity+=1)" class="btn btn-success btn-sm">+</button>
-                                        <button :disabled="cp.product_quantity == 1" @click="updateCart(cp.id, cp.product_quantity-=1)" class="btn btn-danger btn-sm">-</button>
+                                        <input @change="updateCart(cp.id,cp.product_quantity, cp.product_id)" min="1" :max="productById(cp.product_id).product_quantity"  type="number" v-model="cp.product_quantity">
+                                        <button  @click="updateCart(cp.id, cp.product_quantity+=1, cp.product_id)" :disabled="cp.product_quantity == productById(cp.product_id).product_quantity" class="btn btn-success btn-sm">+</button>
+                                        <button :disabled="cp.product_quantity == 1" @click="updateCart(cp.id, cp.product_quantity-=1, cp.product_id)" class="btn btn-danger btn-sm">-</button>
                                     </td>
                                     <td>{{cp.product_price}}</td>
                                     <td>{{cp.sub_total}}</td>
@@ -50,48 +50,62 @@
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <span>Total quantity</span>
-                                <b>10</b>
+                                <b>{{payment.totalQuantity}}</b>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <span>Sub total</span>
-                                <b>$562</b>
+                                <b>$ {{formatMoney(payment.subTotal)}}</b>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <span>Vat</span>
-                                <b>35%</b>
+                                <b>{{payment.vat}}% ({{formatMoney(payment.vatAmount)}})</b>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <span>Total</span>
-                                <b>$5620</b>
+                                <b>$ {{formatMoney(payment.total)}}</b>
                             </li>
                         </ul>
                         <form action="" class="mt-3">
                             <div class="form-group">
                                 <label for="">Customer Name</label>
-                                <select name="" class="form-control" v-model="name_id">
+                                <select :class="{'is-invalid': this.errors['form.customer_id'] }" name="" class="form-control" v-model="form.customer_id">
                                     <option value="-1" disabled>--Please select--</option>
-                                    <option v-for="customer in customers" :value="customer.id">{{ customer.name }}
+                                    <option v-for="customer in customers"  :value="customer.id">{{ customer.name }}
                                     </option>
                                 </select>
+                                <div class="invalid-feedback" v-if="this.errors['form.customer_id']">
+                                    {{ this.errors['form.customer_id'][0] }}
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="">Pay</label>
-                                <input type="text" class="form-control" v-model="form.pay">
+                                <input :class="{'is-invalid': this.errors['form.pay']}" type="text" class="form-control" v-model="form.pay">
+                                <div class="invalid-feedback" v-if="this.errors['form.pay']">
+                                    {{ this.errors['form.pay'][0] }}
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="">Due</label>
-                                <input type="text" class="form-control" v-model="form.due">
+                                <input :class="{'is-invalid': this.errors['form.due']}" type="text" class="form-control" v-model="form.due">
+                                <div class="invalid-feedback" v-if="this.errors['form.due']">
+                                    {{ this.errors['form.due'][0] }}
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="">Pay by</label>
-                                <select name="" class="form-control" v-model="pay_by_id">
+                                <select :class="{'is-invalid': this.errors['form.pay_by']}" name="" class="form-control" v-model="form.pay_by">
                                     <option value="-1" disabled>--Please select--</option>
-                                    <option v-for="customer in customers" :value="customer.id">{{ customer.name }}
+                                    <option value="cash"> Cash
+                                    </option>
+                                    <option value="cheque"> Cheque
                                     </option>
                                 </select>
+                                <div class="invalid-feedback" v-if="this.errors['form.pay_by']">
+                                    {{this.errors['form.pay_by'][0] }}
+                                </div>
                             </div>
                             <div class="form-group">
-                                <button class="form-control btn btn-primary">Submit</button>
+                                <button class="form-control btn btn-primary" @click.prevent="order">Submit</button>
                             </div>
                         </form>
                     </div>
@@ -143,7 +157,7 @@
                                 <div class="row">
                                     <div class="col-md-3 mb-4" v-for="product in filterSearch" :key="product.id">
                                         <div class="card pos-product">
-                                            <a @click.prevent="addToCart(product.id)" href="">
+                                            <a :class="{ 'isDisabled': carProductById(product.id).product_quantity == product.product_quantity}" @click.prevent="addToCart(product.id, product.product_quantity)" href="">
                                                 <img :src="`/storage/${product.image}`" class="card-img-top"
                                                      style="width: 150px; object-fit: contain" alt="...">
                                                 <div class="card-body">
@@ -176,9 +190,9 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-3 mb-4" v-for="product in filterSearchCategory(category.id)"
-                                         :key="product.id">
+                                         :key="'category_'+ product.id">
                                         <div class="card pos-product">
-                                            <a @click.prevent="addToCart(product.id)">
+                                            <a @click.prevent="addToCart(product.id)" :class="{ 'isDisabled': carProductById(product.id).product_quantity == product.product_quantity}" href="">
                                                 <img :src="`/storage/${product.image}`" class="card-img-top"
                                                      style="width: 150px; object-fit: contain" alt="...">
                                                 <div class="card-body">
@@ -229,11 +243,18 @@ export default {
             customers: [],
             cartProducts: [],
             form: {
-                name_id: '',
+                customer_id: '',
                 pay: '',
                 due: '',
-                pay_by_id: ''
+                pay_by: ''
 
+            },
+            payment: {
+                totalQuantity: 0,
+                subTotal:0,
+                vat:5,
+                total: '',
+                vatAmount:''
             }
         }
     },
@@ -245,6 +266,28 @@ export default {
         EventBus.$on('updateCart', this.getCartProducts)
     },
     methods: {
+        order(){
+            let token = this.checkLogin();
+            if (!token) {
+                return
+            }
+            this.errors = []
+            axios.post(`/pos/order`, {
+                payment: this.payment, form: this.form, cartProducts: this.cartProducts
+            }, {headers: {Authorization: `Bearer ${token}`}})
+                .then(res => {
+                    Notification.notify('success', 'Order successfully!')
+                    this.cartProducts = []
+                })
+                .catch(err => {
+                    if(err.response.data.message){
+                        Notification.notify('error', err.response.data.message)
+                    }
+                    else{
+                        this.errors = err.response.data.errors
+                    }
+                })
+        },
         removeCartProduct(id){
             let token = this.checkLogin();
             if (!token) {
@@ -265,25 +308,31 @@ export default {
             }
             axios.get(`/pos/get-cart-products`, {headers: {Authorization: `Bearer ${token}`}})
                 .then(res => {
+                    this.payment.totalQuantity = this.payment.subTotal = 0
                     this.cartProducts = res.data.data
+                    this.cartProducts.forEach((cp) => {
+                        this.payment.totalQuantity+=cp.product_quantity
+                        this.payment.subTotal+=parseFloat(cp.sub_total)
+                    })
+                    let vatAmount = this.payment.subTotal*this.payment.vat/100;
+                    this.payment.vatAmount = vatAmount
+                    this.payment.total =  this.payment.subTotal + vatAmount;
+                    this.payment.subTotal = this.payment.subTotal
                 })
                 .catch(err => {
                     Notification.notify('error', err.response.data.message)
                 })
         },
-        addToCart(id){
-            let token = this.checkLogin();
-            if (!token) {
-                return
-            }
-            axios.get(`/pos/add-to-cart/${id}`, {headers: {Authorization: `Bearer ${token}`}})
-                .then(res => {
-                   Notification.notify('success', 'Add to cart successfully!')
-                    EventBus.$emit('updateCart')
-                })
-                .catch(err => {
-                    Notification.notify('error', err.response.data.message)
-                })
+        productById(id){
+            return this.products.find((p) => {
+                return p.id == id
+            })
+        },
+        carProductById(id){
+            let cartProduct = this.cartProducts.find((p) => {
+                return p.product_id == id
+            })
+            return cartProduct ? cartProduct : { product_quantity : 0}
         },
         getCustomer() {
             let token = this.checkLogin();
@@ -350,10 +399,61 @@ export default {
                 return product.product_name.match(this.searchByCategory) && product.category_id == id
             })
         },
-        updateCart(cartProductId, product_quantity){
+        addToCart(id, productQuantity){
             let token = this.checkLogin();
             if (!token) {
                 return
+            }
+            console.log(id)
+            if(this.carProductById(id).product_quantity == productQuantity){
+                Swal.fire(
+                    `Sorry! You can only order ${productQuantity} maximum products`,
+                    'Please noted',
+                    'warning'
+                )
+                return
+            }
+            axios.get(`/pos/add-to-cart/${id}`, {headers: {Authorization: `Bearer ${token}`}})
+                .then(res => {
+                    Notification.notify('success', 'Add to cart successfully!')
+                    EventBus.$emit('updateCart')
+                })
+                .catch(err => {
+                    Notification.notify('error', err.response.data.message)
+                })
+        },
+       async updateCart(cartProductId, product_quantity, productId = 0){
+            let token = this.checkLogin();
+            if (!token) {
+                return
+            }
+            let canOrder = true
+            let product = this.productById(productId)
+           console.log(product_quantity,product.product_quantity )
+            if( product_quantity  > product.product_quantity)
+            {
+               let result = (await Swal.fire({
+                    title: `There aren't enough stock in storage. Would you like to order ${product.product_quantity} products?`,
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, order it!'
+                }))
+                console.log('result')
+                console.log(result)
+                   if(!result.isConfirmed) {
+                       canOrder = false
+                    }
+                    else{
+                       product_quantity = product.product_quantity
+                   }
+            }
+            if(!canOrder)
+            {
+                EventBus.$emit('updateCart')
+                return;
             }
             axios.put(`/pos/update-cart/${cartProductId}`, {product_quantity},
                 {
@@ -361,12 +461,12 @@ export default {
                         Authorization: `Bearer ${token}`
                     }
                 })
-            .then(res => {
-                EventBus.$emit('updateCart')
-            })
-            .catch(err => {
-                Notification.notify('error', err.response.data.message)
-            })
+                .then(res => {
+                    EventBus.$emit('updateCart')
+                })
+                .catch(err => {
+                    Notification.notify('error', err.response.data.message)
+                })
         }
     },
     computed: {
@@ -388,5 +488,11 @@ export default {
     *{
         margin-right: 5px;
     }
+}
+.isDisabled {
+    color: currentColor;
+    cursor: not-allowed;
+    opacity: 0.5;
+    text-decoration: none;
 }
 </style>
