@@ -4462,7 +4462,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       products: [],
       categories: [],
-      productOfCategory: [],
       search: '',
       searchByCategory: '',
       customers: [],
@@ -4490,6 +4489,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     EventBus.$on('updateCart', this.getCartProducts);
   },
   methods: {
+    checkDisable: function checkDisable(product) {
+      return this.carProductById(product.id).product_quantity == product.product_quantity && product.product_quantity != 0;
+    },
     order: function order() {
       var _this = this;
 
@@ -4511,6 +4513,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }).then(function (res) {
         Notification.notify('success', 'Order successfully!');
         _this.cartProducts = [];
+
+        _this.fetch();
       })["catch"](function (err) {
         if (err.response.data.message) {
           Notification.notify('error', err.response.data.message);
@@ -4636,30 +4640,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         Notification.notify('error', err.response.data.message);
       });
     },
-    getProductByCategoryId: function getProductByCategoryId(id) {
+    filterSearchCategory: function filterSearchCategory(id) {
       var _this6 = this;
 
-      var token = this.checkLogin();
-
-      if (!token) {
-        return;
-      }
-
-      axios.get("/pos/product-of-category/".concat(id), {
-        headers: {
-          Authorization: "Bearer ".concat(token)
-        }
-      }).then(function (res) {
-        _this6.productOfCategory = res.data.data;
-      })["catch"](function (err) {
-        Notification.notify('error', err.response.data.message);
-      });
-    },
-    filterSearchCategory: function filterSearchCategory(id) {
-      var _this7 = this;
-
       return this.products.filter(function (product) {
-        return product.product_name.match(_this7.searchByCategory) && product.category_id == id;
+        return product.product_name.match(_this6.searchByCategory) && product.category_id == id;
       });
     },
     addToCart: function addToCart(id, productQuantity) {
@@ -4669,7 +4654,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return;
       }
 
-      console.log(id);
+      console.log(productQuantity);
+
+      if (!productQuantity) {
+        Swal.fire("Sorry! This product out of stock at the moment", 'Please noted', 'warning');
+        return;
+      }
 
       if (this.carProductById(id).product_quantity == productQuantity) {
         Swal.fire("Sorry! You can only order ".concat(productQuantity, " maximum products"), 'Please noted', 'warning');
@@ -4689,7 +4679,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     updateCart: function updateCart(cartProductId, product_quantity) {
       var _arguments = arguments,
-          _this8 = this;
+          _this7 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
         var productId, token, canOrder, product, result;
@@ -4698,7 +4688,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 productId = _arguments.length > 2 && _arguments[2] !== undefined ? _arguments[2] : 0;
-                token = _this8.checkLogin();
+                token = _this7.checkLogin();
 
                 if (token) {
                   _context.next = 4;
@@ -4709,7 +4699,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 4:
                 canOrder = true;
-                product = _this8.productById(productId);
+                product = _this7.productById(productId);
                 console.log(product_quantity, product.product_quantity);
 
                 if (!(product_quantity > product.product_quantity)) {
@@ -4772,10 +4762,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   computed: {
     filterSearch: function filterSearch() {
-      var _this9 = this;
+      var _this8 = this;
 
       return this.products.filter(function (product) {
-        return product.product_name.match(_this9.search);
+        return product.product_name.match(_this8.search);
       });
     }
   }
@@ -38146,10 +38136,7 @@ var render = function() {
                                 "a",
                                 {
                                   class: {
-                                    isDisabled:
-                                      _vm.carProductById(product.id)
-                                        .product_quantity ==
-                                      product.product_quantity
+                                    isDisabled: _vm.checkDisable(product)
                                   },
                                   attrs: { href: "" },
                                   on: {
@@ -38285,16 +38272,16 @@ var render = function() {
                                   "a",
                                   {
                                     class: {
-                                      isDisabled:
-                                        _vm.carProductById(product.id)
-                                          .product_quantity ==
-                                        product.product_quantity
+                                      isDisabled: _vm.checkDisable(product)
                                     },
                                     attrs: { href: "" },
                                     on: {
                                       click: function($event) {
                                         $event.preventDefault()
-                                        return _vm.addToCart(product.id)
+                                        return _vm.addToCart(
+                                          product.id,
+                                          product.product_quantity
+                                        )
                                       }
                                     }
                                   },
@@ -60818,8 +60805,8 @@ var routes = [{
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\xampp\htdocs\inventory-system\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\xampp\htdocs\inventory-system\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/lehuy/HuyDev/inventory-system/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/lehuy/HuyDev/inventory-system/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

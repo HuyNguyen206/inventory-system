@@ -157,7 +157,7 @@
                                 <div class="row">
                                     <div class="col-md-3 mb-4" v-for="product in filterSearch" :key="product.id">
                                         <div class="card pos-product">
-                                            <a :class="{ 'isDisabled': carProductById(product.id).product_quantity == product.product_quantity}" @click.prevent="addToCart(product.id, product.product_quantity)" href="">
+                                            <a :class="{ 'isDisabled': checkDisable(product)}" @click.prevent="addToCart(product.id, product.product_quantity)" href="">
                                                 <img :src="`/storage/${product.image}`" class="card-img-top"
                                                      style="width: 150px; object-fit: contain" alt="...">
                                                 <div class="card-body">
@@ -192,7 +192,7 @@
                                     <div class="col-md-3 mb-4" v-for="product in filterSearchCategory(category.id)"
                                          :key="'category_'+ product.id">
                                         <div class="card pos-product">
-                                            <a @click.prevent="addToCart(product.id)" :class="{ 'isDisabled': carProductById(product.id).product_quantity == product.product_quantity}" href="">
+                                            <a @click.prevent="addToCart(product.id, product.product_quantity)" :class="{ 'isDisabled': checkDisable(product)}" href="">
                                                 <img :src="`/storage/${product.image}`" class="card-img-top"
                                                      style="width: 150px; object-fit: contain" alt="...">
                                                 <div class="card-body">
@@ -237,7 +237,6 @@ export default {
         return {
             products: [],
             categories: [],
-            productOfCategory: [],
             search: '',
             searchByCategory: '',
             customers: [],
@@ -266,6 +265,10 @@ export default {
         EventBus.$on('updateCart', this.getCartProducts)
     },
     methods: {
+        checkDisable(product){
+           return this.carProductById(product.id).product_quantity == product.product_quantity
+               && product.product_quantity != 0
+        },
         order(){
             let token = this.checkLogin();
             if (!token) {
@@ -278,6 +281,7 @@ export default {
                 .then(res => {
                     Notification.notify('success', 'Order successfully!')
                     this.cartProducts = []
+                    this.fetch();
                 })
                 .catch(err => {
                     if(err.response.data.message){
@@ -377,23 +381,6 @@ export default {
                     Notification.notify('error', err.response.data.message)
                 })
         },
-        getProductByCategoryId(id) {
-            let token = this.checkLogin();
-            if (!token) {
-                return
-            }
-            axios.get(`/pos/product-of-category/${id}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-                .then(res => {
-                    this.productOfCategory = res.data.data
-                })
-                .catch(err => {
-                    Notification.notify('error', err.response.data.message)
-                })
-        },
         filterSearchCategory(id) {
             return this.products.filter(product => {
                 return product.product_name.match(this.searchByCategory) && product.category_id == id
@@ -404,7 +391,15 @@ export default {
             if (!token) {
                 return
             }
-            console.log(id)
+            console.log(productQuantity)
+            if(!productQuantity){
+                Swal.fire(
+                    `Sorry! This product out of stock at the moment`,
+                    'Please noted',
+                    'warning'
+                )
+                return
+            }
             if(this.carProductById(id).product_quantity == productQuantity){
                 Swal.fire(
                     `Sorry! You can only order ${productQuantity} maximum products`,
