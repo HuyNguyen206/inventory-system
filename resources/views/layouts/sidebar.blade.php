@@ -121,12 +121,12 @@
         </div>
     </li>
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap6"
-           aria-expanded="true" aria-controls="collapseBootstrap6">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap8"
+           aria-expanded="true" aria-controls="collapseBootstrap8">
             <i class="far fa-fw fa-window-maximize"></i>
             <span>Orders</span>
         </a>
-        <div id="collapseBootstrap6" class="collapse" aria-labelledby="headingBootstrap"
+        <div id="collapseBootstrap8" class="collapse" aria-labelledby="headingBootstrap"
              data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <router-link class="collapse-item" :to="{name: 'orders.index'}">List Order today</router-link>

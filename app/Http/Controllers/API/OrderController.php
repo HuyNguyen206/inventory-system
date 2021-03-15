@@ -71,6 +71,14 @@ class OrderController extends Controller
         }catch (\Throwable $ex){
             return  response()->error($ex->getMessage());
         }
+    }
 
+    public function getOrderDetailByOrderId(Order $order){
+        try {
+            $orderDetail = $order->orderDetails()->latest()->load('product');
+            return response()->success($orderDetail);
+        }catch (\Throwable $ex){
+         return response()->error($ex->getMessage());
+        }
     }
 }

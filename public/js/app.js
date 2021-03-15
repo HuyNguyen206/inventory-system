@@ -4353,7 +4353,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       return this.orders.filter(function (order) {
-        return order.name.match(_this3.search);
+        return order.customer.name.match(_this3.search);
       });
     }
   }

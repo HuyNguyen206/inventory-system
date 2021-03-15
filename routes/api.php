@@ -53,4 +53,5 @@ Route::middleware('jwt')->namespace('API')->group(function () {
     Route::put('pos/update-cart/{cartProduct}', 'POSController@updateCart');
     Route::post('pos/order', 'POSController@order');
     Route::get('orders/orders-by-today', 'OrderController@getOrderByToday');
+    Route::get('orders/order-detail/{order}', 'OrderController@getOrderDetailByOrderId');
 });

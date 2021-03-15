@@ -132,7 +132,7 @@ export default {
     computed: {
         filterSearch() {
             return this.orders.filter(order => {
-                return order.name.match(this.search)
+                return order.customer.name.match(this.search)
             })
         }
     }
