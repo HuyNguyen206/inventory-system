@@ -27,6 +27,7 @@ import AddCustomer from "./components/Customer/AddCustomer";
 import ListCustomer from "./components/Customer/ListCustomer";
 import EditCustomer from "./components/Customer/EditCustomer";
 import POS from "./components/POS";
+import ListOrder from "./components/Order/ListOrder";
 const routes = [
     {
         path: '/',
@@ -173,7 +174,11 @@ const routes = [
         component: POS,
         name: 'pos'
     },
-
+    {
+        path: '/orders',
+        component: ListOrder,
+        name: 'orders.index'
+    },
     // {
     //     path: '/bar',
     //     component: Bar

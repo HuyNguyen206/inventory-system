@@ -2,6 +2,12 @@ import AppStorage from "../helpers/AppStorage";
 
 export default {
     methods: {
+        carProductById(id){
+            let cartProduct = this.cartProducts.find((p) => {
+                return p.product_id == id
+            })
+            return cartProduct ? cartProduct : { product_quantity : 0}
+        },
         checkLogin() {
             if (!User.loggedInAlready()) {
                 this.$router.push({name: 'login'})

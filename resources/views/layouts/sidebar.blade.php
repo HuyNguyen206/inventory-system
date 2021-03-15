@@ -121,6 +121,20 @@
         </div>
     </li>
     <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap6"
+           aria-expanded="true" aria-controls="collapseBootstrap6">
+            <i class="far fa-fw fa-window-maximize"></i>
+            <span>Orders</span>
+        </a>
+        <div id="collapseBootstrap6" class="collapse" aria-labelledby="headingBootstrap"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <router-link class="collapse-item" :to="{name: 'orders.index'}">List Order today</router-link>
+                <router-link class="collapse-item" :to="{name: 'salaries.index'}">List salary</router-link>
+            </div>
+        </div>
+    </li>
+    <li class="nav-item">
         <a class="nav-link" href="forms.html">
             <i class="fab fa-fw fa-wpforms"></i>
             <span>Forms</span>

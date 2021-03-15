@@ -113,19 +113,76 @@
 </template>
 
 <script>
+import helper from "../../mixins/helper";
+
 export default {
     name: "Products",
+    mixins: [helper],
     data() {
         return {
             search: '',
             searchByCategory: '',
         }
     },
-    props: ['products', 'categories'],
+    props: ['products', 'categories', 'cartProducts'],
+    methods:{
+        checkDisable(product){
+            return this.carProductById(product.id).product_quantity == product.product_quantity
+                && product.product_quantity != 0
+        },
+        filterSearchCategory(id) {
+            return this.products.filter(product => {
+                return product.product_name.match(this.searchByCategory) && product.category_id == id
+            })
+        },
+        addToCart(id, productQuantity){
+            let token = this.checkLogin();
+            if (!token) {
+                return
+            }
+            console.log(productQuantity)
+            if(!productQuantity){
+                Swal.fire(
+                    `Sorry! This product out of stock at the moment`,
+                    'Please noted',
+                    'warning'
+                )
+                return
+            }
+            if(this.carProductById(id).product_quantity == productQuantity){
+                Swal.fire(
+                    `Sorry! You can only order ${productQuantity} maximum products`,
+                    'Please noted',
+                    'warning'
+                )
+                return
+            }
+            axios.get(`/pos/add-to-cart/${id}`, {headers: {Authorization: `Bearer ${token}`}})
+                .then(res => {
+                    Notification.notify('success', 'Add to cart successfully!')
+                    EventBus.$emit('updateCart')
+                })
+                .catch(err => {
+                    Notification.notify('error', err.response.data.message)
+                })
+        },
+    },
+    computed: {
+        filterSearch() {
+            return this.products.filter(product => {
+                return product.product_name.match(this.search)
+            })
+        },
+    }
 
 }
 </script>
 
 <style scoped>
-
+.isDisabled {
+    color: currentColor;
+    cursor: not-allowed;
+    opacity: 0.5;
+    text-decoration: none;
+}
 </style>
