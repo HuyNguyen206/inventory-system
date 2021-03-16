@@ -8,9 +8,9 @@
     </a>
     <hr class="sidebar-divider my-0">
     <li class="nav-item">
-        <a class="nav-link" href="index.html">
+        <router-link :to="{name: 'home'}" class="nav-link" href="">
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span></a>
+            <span>Dashboard</span></router-link>
     </li>
     <li class="nav-item">
         <router-link :to="{name: 'pos'}" class="nav-link">
@@ -130,7 +130,7 @@
              data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <router-link class="collapse-item" :to="{name: 'orders.index'}">List Order today</router-link>
-                <router-link class="collapse-item" :to="{name: 'salaries.index'}">List salary</router-link>
+                <router-link class="collapse-item" :to="{name: 'orders.search'}">Search Order</router-link>
             </div>
         </div>
     </li>

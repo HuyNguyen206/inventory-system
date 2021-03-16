@@ -105,7 +105,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <button class="form-control btn btn-primary" @click.prevent="order">Submit</button>
+                                <button class="form-control btn btn-primary" :disabled="cartProducts.length == 0" @click.prevent="order">Submit</button>
                             </div>
                         </form>
                     </div>
@@ -172,13 +172,27 @@ export default {
                     Notification.notify('success', 'Order successfully!')
                     this.cartProducts = []
                     this.fetch();
+                    this.form = {
+                        customer_id: '',
+                            pay: '',
+                            due: '',
+                            pay_by: ''
+
+                    },
+                    this.payment = {
+                        totalQuantity: 0,
+                            subTotal:0,
+                            vat:5,
+                            total: '',
+                            vatAmount:''
+                    }
                 })
                 .catch(err => {
-                    if(err.response.data.message){
-                        Notification.notify('error', err.response.data.message)
+                    if(err.response.data.errors){
+                        this.errors = err.response.data.errors
                     }
                     else{
-                        this.errors = err.response.data.errors
+                        Notification.notify('error', err.response.data.message)
                     }
                 })
         },

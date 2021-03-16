@@ -65,8 +65,9 @@ class OrderController extends Controller
 
     public function getOrderByToday(){
         try {
-            $today = date('Y-m-d');
-            $orders = Order::with('customer')->whereOrderDate($today)->get();
+//            $today = date('Y-m-d');
+//            $orders = Order::with('customer')->whereOrderDate($today)->get();
+            $orders = Order::with('customer')->get();
             return response()->success($orders);
         }catch (\Throwable $ex){
             return  response()->error($ex->getMessage());
@@ -75,10 +76,22 @@ class OrderController extends Controller
 
     public function getOrderDetailByOrderId(Order $order){
         try {
-            $orderDetail = $order->orderDetails()->latest()->load('product');
-            return response()->success($orderDetail);
+            $orderDetail = $order->orderDetails->load('product')->sortByDesc('created_at');
+            $order->load('customer');
+            $data = compact('order', 'orderDetail');
+            return response()->success($data);
         }catch (\Throwable $ex){
          return response()->error($ex->getMessage());
         }
+    }
+
+    public function getOrderByDate(Request $request){
+        try {
+            $orders = Order::with('customer')->whereOrderDate($request->date)->get();
+            return response()->success($orders);
+        }catch (\Throwable $ex){
+            return response()->error($ex->getMessage());
+        }
+
     }
 }

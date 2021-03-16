@@ -31,6 +31,7 @@ Route::group([
 });
 
 Route::middleware('jwt')->namespace('API')->group(function () {
+    Route::get('dashboard', 'POSController@index');
     Route::apiResources([
         'employees' => 'EmployeeController',
         'suppliers' => 'SupplierController',
@@ -54,4 +55,5 @@ Route::middleware('jwt')->namespace('API')->group(function () {
     Route::post('pos/order', 'POSController@order');
     Route::get('orders/orders-by-today', 'OrderController@getOrderByToday');
     Route::get('orders/order-detail/{order}', 'OrderController@getOrderDetailByOrderId');
+    Route::post('orders/search-orders-by-date', 'OrderController@getOrderByDate');
 });

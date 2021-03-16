@@ -28,6 +28,8 @@ import ListCustomer from "./components/Customer/ListCustomer";
 import EditCustomer from "./components/Customer/EditCustomer";
 import POS from "./components/POS";
 import ListOrder from "./components/Order/ListOrder";
+import OrderDetail from "./components/Order/OrderDetail";
+import SearchOrder from "./components/Order/SearchOrder";
 const routes = [
     {
         path: '/',
@@ -179,6 +181,16 @@ const routes = [
         component: ListOrder,
         name: 'orders.index'
     },
+    {
+        path: '/orders/order-detail/:id',
+        component: OrderDetail,
+        name: 'orders.detail'
+    },
+    {
+        path: '/orders/search-orders',
+        component: SearchOrder,
+        name: 'orders.search'
+    }
     // {
     //     path: '/bar',
     //     component: Bar

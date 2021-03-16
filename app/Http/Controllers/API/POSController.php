@@ -8,6 +8,7 @@ use App\Http\Resources\PosCategoryResource;
 use App\Http\Resources\PosProductResource;
 use App\Http\Resources\ProductResource;
 use App\Model\Category;
+use App\Model\Expense;
 use App\Model\Order;
 use App\Model\Product;
 use App\Model\TempCart;
@@ -17,6 +18,22 @@ use Illuminate\Support\Facades\DB;
 class POSController extends Controller
 {
     //
+    public function index(){
+        try {
+            $orders = Order::all();
+            $totalSell = number_format($orders->sum('total'),3);
+            $totalIncome = number_format($orders->sum('pay'),3);
+            $totalDue = number_format($orders->sum('due'),3);
+            $totalExpense = number_format(Expense::all()->sum('amount'),3);
+            $products = ProductResource::collection(Product::with(['category', 'supplier'])->whereProductQuantity(0)->get());
+            return response()->success(compact('totalSell', 'totalIncome', 'totalDue', 'totalExpense', 'products'));
+        }catch (\Throwable $ex)
+        {
+            return response()->error($ex->getMessage());
+        }
+
+    }
+
     public function getAllProduct()
     {
         try {

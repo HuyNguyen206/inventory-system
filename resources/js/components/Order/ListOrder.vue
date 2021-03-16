@@ -49,7 +49,7 @@
                                 <td>{{ order.pay_by }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <router-link :to="{name: 'orders.show', params: {id: order.id}}" class="btn btn-primary">View</router-link>
+                                        <router-link :to="{name: 'orders.detail', params: {id: order.id}}" class="btn btn-primary">View detail</router-link>
 <!--                                        <a @click.prevent="deleteCategory(category.id)" class="btn btn-danger text-white">Delete</a>-->
                                     </div>
                                 </td>
